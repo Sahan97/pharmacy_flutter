@@ -184,7 +184,7 @@ class ApiService {
 
   Future<List<Item>> getItemsCall(dynamic data) async {
     CommonResponse response =
-        await _performRequest('/lg/item/get', RequestType.get, body: data);
+        await _performRequest('/lg/item/getAll', RequestType.get, body: data);
     return List<Item>.from(
       response.data.map(
         (item) => Item.fromJson(item),
@@ -192,10 +192,10 @@ class ApiService {
     );
   }
 
-  Future deleteOrRestoreCall(int id, bool setDeleted) async {
+  Future itemActiveInactive(int id, bool isActive) async {
     CommonResponse response = await _performRequest(
-        '/lg/item/deleteRestore', RequestType.get,
-        body: {'isDeleted': setDeleted, 'id': id});
+        '/lg/item/updateStatus', RequestType.post,
+        body: {'isActive': isActive, 'itemId': id});
     return response;
   }
 

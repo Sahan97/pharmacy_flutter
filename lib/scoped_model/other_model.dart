@@ -1,6 +1,6 @@
 import 'package:communication/views/admin_sales_page/Admin_sales_page.dart';
 import 'package:communication/views/home_page/home_page.dart';
-import 'package:communication/views/manage_items/manage_items.dart';
+import 'package:communication/views/manage_pharmacy_items/manage_items.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 mixin OtherScopedModel on Model {

@@ -17,7 +17,6 @@ class SaleItem extends StatefulWidget {
 }
 
 class _SaleItemState extends State<SaleItem> {
-  bool isDiscountAdd = false;
   double price = 0;
   double quantity = 1;
   var focusNode = new FocusNode();
@@ -27,7 +26,7 @@ class _SaleItemState extends State<SaleItem> {
   void initState() {
     focusNode.requestFocus();
     qtyController.text =
-        widget.item.availableQuantity > 0 ? quantity.toStringAsFixed(0) : '0';
+        widget.item.currentQty > 0 ? quantity.toStringAsFixed(0) : '0';
     super.initState();
   }
 
@@ -43,14 +42,9 @@ class _SaleItemState extends State<SaleItem> {
           ),
           _qty(),
           PriceView(
-            price: widget.item.sellPricePerItem,
+            price: widget.item.sellPrice,
             color: Colors.blue,
           ),
-          widget.item.discount != 0
-              ? _addDiscount()
-              : Container(
-                  width: 125,
-                ),
           PriceView(
             price: price,
             color: Colors.green,
@@ -61,10 +55,7 @@ class _SaleItemState extends State<SaleItem> {
   }
 
   calPrice() {
-    double newPrice = isDiscountAdd
-        ? ((widget.item.sellPricePerItem * (100 - widget.item.discount) / 100) *
-            quantity)
-        : (widget.item.sellPricePerItem * quantity);
+    double newPrice = (widget.item.sellPrice * quantity);
     setState(() {
       price = newPrice;
     });
@@ -84,39 +75,6 @@ class _SaleItemState extends State<SaleItem> {
         size: 30,
       ),
     );
-  }
-
-  Widget _addDiscount() {
-    return Container(
-      margin: EdgeInsets.only(left: 35, right: 40),
-      height: 50,
-      width: 50,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.orange, width: 3),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: InkWell(
-        onTap: () {
-          _discount(!isDiscountAdd);
-        },
-        child: Center(
-          child: isDiscountAdd
-              ? Icon(
-                  Icons.check,
-                  color: Colors.orange,
-                  size: 40,
-                )
-              : Container(),
-        ),
-      ),
-    );
-  }
-
-  _discount(bool isAdd) {
-    setState(() {
-      isDiscountAdd = isAdd;
-    });
-    widget.item.isDiscountAdd = isDiscountAdd;
   }
 
   Widget _qty() {
@@ -143,11 +101,11 @@ class _SaleItemState extends State<SaleItem> {
             quantity = 0;
             widget.item.sellQuantity = 0;
           } else {
-            if (widget.item.availableQuantity < double.parse(value)) {
+            if (widget.item.currentQty < double.parse(value)) {
               await Messages.simpleMessage(
                   head: 'Failed!',
                   body:
-                      'This quantity is not available. Only ${widget.item.availableQuantity} items are available!');
+                      'This quantity is not available. Only ${widget.item.currentQty} items are available!');
               qtyController.text = "0";
               quantity = 0;
               widget.item.sellQuantity = quantity;

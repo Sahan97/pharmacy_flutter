@@ -51,3 +51,74 @@ class InputField extends StatelessWidget {
     );
   }
 }
+
+class InputFieldDropDown extends StatefulWidget {
+  final String labelText;
+  final IconData icon;
+  final Function onChange;
+  final double width;
+  final TextEditingController controller;
+  final List<String> values;
+  final String initialValue;
+  const InputFieldDropDown(
+      {Key key,
+      @required this.icon,
+      @required this.labelText,
+      @required this.onChange,
+      @required this.values,
+      this.width = 300,
+      this.controller,
+      this.initialValue = ''})
+      : super(key: key);
+  @override
+  _InputFieldDropDownState createState() => _InputFieldDropDownState();
+}
+
+class _InputFieldDropDownState extends State<InputFieldDropDown> {
+  String selectedValue;
+
+  @override
+  void initState() {
+    selectedValue = widget.initialValue;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 20),
+      width: widget.width,
+      child: FormField<String>(
+        builder: (FormFieldState<String> state) {
+          return InputDecorator(
+            decoration: InputDecoration(
+              labelText: widget.labelText,
+              labelStyle: TextStyle(fontSize: 18),
+              prefixIcon: Icon(widget.icon),
+            ),
+            isEmpty: selectedValue == '',
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                value: selectedValue,
+                isDense: true,
+                onChanged: (String newValue) {
+                  setState(() {
+                    selectedValue = newValue;
+                    state.didChange(newValue);
+                    widget.onChange(newValue);
+                  });
+                },
+                items: widget.values.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}

@@ -1,6 +1,6 @@
 import 'package:communication/helpers/api_service.dart';
 import 'package:communication/model/sale.dart';
-import 'package:communication/views/manage_items/all_items.dart';
+import 'package:communication/views/manage_pharmacy_items/all_items.dart';
 import 'package:communication/widgets/sale_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

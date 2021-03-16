@@ -167,16 +167,13 @@ class _AllItemsState extends State<AllItems> {
       color: Colors.white,
       child: Row(
         children: [
-          SizedBox(
-            width: 20,
-          ),
+          LabelText('Code', Colors.black),
           Expanded(
             child: LabelText('Name', Colors.black, al: Alignment.centerLeft),
           ),
           LabelText('QTY', Colors.grey),
           LabelText('Buy', Colors.blue),
           LabelText('Sell', Colors.green),
-          LabelText('Discount', Colors.orange),
           SizedBox(
             width: 24,
           )

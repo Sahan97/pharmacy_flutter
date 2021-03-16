@@ -1,9 +1,9 @@
 import 'package:communication/helpers/images.dart';
 import 'package:communication/scoped_model/main.dart';
-import 'package:communication/views/manage_items/add_item.dart';
-import 'package:communication/views/manage_items/all_items.dart';
-import 'package:communication/views/manage_items/edit_item.dart';
-import 'package:communication/views/manage_items/re_fill_item.dart';
+import 'package:communication/views/manage_pharmacy_items/add_item.dart';
+import 'package:communication/views/manage_pharmacy_items/all_items.dart';
+import 'package:communication/views/manage_pharmacy_items/edit_item.dart';
+import 'package:communication/views/manage_pharmacy_items/re_fill_item.dart';
 import 'package:communication/widgets/Messages.dart';
 import 'package:communication/widgets/background_image.dart';
 import 'package:communication/widgets/custom_tab_view.dart';
@@ -25,7 +25,7 @@ class ManageItems extends StatelessWidget {
           child: Stack(
             children: [
               CustomTabView(
-                title: 'Manage Items',
+                title: 'Manage Pharmacy Items',
                 labels: ['All Items', 'Add New Item'],
                 tabs: [
                   AllItems(),

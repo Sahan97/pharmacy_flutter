@@ -1,5 +1,4 @@
 import 'package:communication/helpers/api_service.dart';
-import 'package:communication/model/item.dart';
 import 'package:communication/widgets/Messages.dart';
 import 'package:communication/widgets/chip_input.dart';
 import 'package:communication/widgets/input_field.dart';

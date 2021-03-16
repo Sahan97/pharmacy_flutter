@@ -4,7 +4,7 @@ import 'package:communication/model/bar_code.dart';
 import 'package:communication/model/item.dart';
 import 'package:communication/scoped_model/main.dart';
 import 'package:communication/views/home_page/home_page.dart';
-import 'package:communication/views/manage_items/all_items.dart';
+import 'package:communication/views/manage_pharmacy_items/all_items.dart';
 import 'package:communication/widgets/loading_btn.dart';
 import 'package:communication/widgets/sale_item.dart';
 import 'package:flutter/material.dart';

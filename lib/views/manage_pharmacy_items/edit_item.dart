@@ -1,7 +1,7 @@
 import 'package:communication/helpers/api_service.dart';
 import 'package:communication/model/item.dart';
 import 'package:communication/scoped_model/main.dart';
-import 'package:communication/views/manage_items/manage_items.dart';
+import 'package:communication/views/manage_pharmacy_items/manage_items.dart';
 import 'package:communication/widgets/Messages.dart';
 import 'package:communication/widgets/blackout.dart';
 import 'package:communication/widgets/input_field.dart';
@@ -18,7 +18,7 @@ class EditItem extends StatefulWidget {
 class _EditItemState extends State<EditItem> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isBusy = false;
-  Item itemToSend = Item(isDeleted: false);
+  Item itemToSend = Item(isActive: true);
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant(
@@ -53,17 +53,33 @@ class _EditItemState extends State<EditItem> {
                               width: 400,
                             ),
                             InputField(
+                              initialValue:
+                                  model.items[model.editItemIndex].code,
+                              icon: Icons.note_add,
+                              labelText: 'Item Code',
+                              onSaved: (value) {
+                                itemToSend.code = value;
+                              },
+                              onValidate: (String value) {
+                                if (value.isEmpty) {
+                                  return 'Please enter item code';
+                                }
+                                return null;
+                              },
+                              autofocus: true,
+                              width: 400,
+                            ),
+                            InputField(
                               initialValue: model
-                                  .items[model.editItemIndex].availableQuantity
+                                  .items[model.editItemIndex].currentQty
                                   .toStringAsFixed(0),
                               icon: Icons.check_circle_outline,
-                              labelText: 'Available Quantity',
+                              labelText: 'Current Quantity',
                               onSaved: (String value) {
                                 if (value.isEmpty) {
-                                  itemToSend.availableQuantity = 0;
+                                  itemToSend.currentQty = 0;
                                 } else {
-                                  itemToSend.availableQuantity =
-                                      double.parse(value);
+                                  itemToSend.currentQty = double.parse(value);
                                 }
                               },
                               onValidate: (String value) {
@@ -74,37 +90,36 @@ class _EditItemState extends State<EditItem> {
                             ),
                             InputField(
                               initialValue: model
-                                  .items[model.editItemIndex].sellPricePerItem
+                                  .items[model.editItemIndex].reOrderQty
+                                  .toStringAsFixed(0),
+                              icon: Icons.check_circle_outline,
+                              labelText: 'Re Order Quantity',
+                              onSaved: (String value) {
+                                if (value.isEmpty) {
+                                  itemToSend.reOrderQty = 0;
+                                } else {
+                                  itemToSend.reOrderQty = double.parse(value);
+                                }
+                              },
+                              onValidate: (String value) {
+                                return null;
+                              },
+                              width: 400,
+                              isNumberOnly: true,
+                            ),
+                            InputField(
+                              initialValue: model
+                                  .items[model.editItemIndex].sellPrice
                                   .toStringAsFixed(0),
                               icon: Icons.monetization_on,
                               labelText: 'Sell Price',
                               onSaved: (String value) {
-                                itemToSend.sellPricePerItem =
-                                    double.parse(value);
+                                itemToSend.sellPrice = double.parse(value);
                               },
                               onValidate: (String value) {
                                 if (value.isEmpty) {
                                   return 'Please enter sell price';
                                 }
-                                return null;
-                              },
-                              width: 400,
-                              isNumberOnly: true,
-                            ),
-                            InputField(
-                              initialValue: model
-                                  .items[model.editItemIndex].discount
-                                  .toStringAsFixed(0),
-                              icon: Icons.money_off,
-                              labelText: 'Discount',
-                              onSaved: (String value) {
-                                if (value.isEmpty) {
-                                  itemToSend.discount = 0;
-                                } else {
-                                  itemToSend.discount = double.parse(value);
-                                }
-                              },
-                              onValidate: (String value) {
                                 return null;
                               },
                               width: 400,
@@ -152,9 +167,8 @@ class _EditItemState extends State<EditItem> {
     ApiService.shared.updateItemCall({
       "name": itemToSend.name,
       "isDeleted": false,
-      "quantity": itemToSend.availableQuantity,
-      "sellPrice": itemToSend.sellPricePerItem,
-      "discount": itemToSend.discount,
+      "quantity": itemToSend.currentQty,
+      "sellPrice": itemToSend.sellPrice,
       "itemId": itemToSend.id
     }).then((value) {
       setState(() {
@@ -166,7 +180,6 @@ class _EditItemState extends State<EditItem> {
             head: 'Item Name Already exists!',
             body: 'Item name you entered \'${item.name}\' is already exists.');
       } else {
-        itemToSend.buy = model.items[model.editItemIndex].buy;
         model.items[model.editItemIndex] = itemToSend;
         model.setManageItemPopup(ManageItemPopup.NoPopup);
         Messages.simpleMessage(

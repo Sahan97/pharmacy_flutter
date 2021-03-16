@@ -8,7 +8,7 @@ import 'package:communication/widgets/loading_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:communication/views/manage_items/all_items.dart';
+import 'package:communication/views/manage_pharmacy_items/all_items.dart';
 
 class ItemFinder extends StatefulWidget {
   ItemFinder({Key key}) : super(key: key);

@@ -1,43 +1,53 @@
-import 'package:communication/model/buy.dart';
-
 class Item {
   Item({
     this.id,
     this.name,
-    this.isDeleted,
-    this.availableQuantity,
-    this.sellPricePerItem,
-    this.discount,
-    this.buy,
+    this.code,
+    this.category,
+    this.priceCategory,
+    this.buyPrice,
+    this.sellPrice,
+    this.currentQty,
+    this.reOrderQty,
+    this.isActive,
   });
 
   int id;
   String name;
-  bool isDeleted;
-  double availableQuantity;
-  double sellPricePerItem;
-  double discount;
-  Buy buy;
+  String code;
+  String category;
+  String priceCategory;
+  double buyPrice;
+  double sellPrice;
+  double currentQty;
+  double reOrderQty;
+  bool isActive;
   double totalPrice = 0;
   double sellQuantity = 1;
-  bool isDiscountAdd = false;
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
-      id: json["id"],
-      name: json["name"],
-      isDeleted: json["isDeleted"],
-      availableQuantity: double.parse(json["availableQuantity"].toString()),
-      sellPricePerItem: double.parse(json["sellPricePerItem"].toString()),
-      discount: double.parse(json["discount"].toString()),
-      buy: json['buys'] == null ? null : Buy.fromJson(json['buys'][0]));
+        id: json["id"],
+        name: json["name"],
+        code: json["code"],
+        category: json["category"],
+        priceCategory: json["priceCategory"],
+        buyPrice: json["buyPrice"].toDouble(),
+        sellPrice: json["sellPrice"].toDouble(),
+        currentQty: json["currentQty"].toDouble(),
+        reOrderQty: json["reOrderQty"].toDouble(),
+        isActive: json["isActive"],
+      );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-        "isDeleted": isDeleted,
-        "availableQuantity": availableQuantity,
-        "sellPricePerItem": sellPricePerItem,
-        "discount": discount,
-        "buy": buy
+        "code": code,
+        "category": category,
+        "priceCategory": priceCategory,
+        "buyPrice": buyPrice,
+        "sellPrice": sellPrice,
+        "currentQty": currentQty,
+        "reOrderQty": reOrderQty,
+        "isActive": isActive,
       };
 }
