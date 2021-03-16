@@ -5,6 +5,7 @@ import 'package:communication/model/item.dart';
 import 'package:communication/scoped_model/main.dart';
 import 'package:communication/views/home_page/home_page.dart';
 import 'package:communication/views/manage_pharmacy_items/all_items.dart';
+import 'package:communication/widgets/Messages.dart';
 import 'package:communication/widgets/loading_btn.dart';
 import 'package:communication/widgets/sale_item.dart';
 import 'package:flutter/material.dart';
@@ -84,17 +85,18 @@ class _SalesPageState extends State<SalesPage> {
                               text: 'Other Charges (F3)',
                               color: Colors.green,
                             ),
-                            LoadingBtn(
-                              onPressed: _finishOrderClick,
-                              text: 'Finish Order (F4)',
-                              color: Colors.orange,
-                            ),
+
                             Spacer(),
                             // LoadingBtn(
                             //   onPressed: _reFillNoteClick,
                             //   text: 'Re-Fill Note (F3)',
                             //   color: Colors.blue,
                             // ),
+                            LoadingBtn(
+                              onPressed: _finishOrderClick,
+                              text: 'Finish Order (F4)',
+                              color: Colors.orange,
+                            ),
                             LoadingBtn(
                               onPressed: _clearClick,
                               text: 'Clear (F5)',
@@ -338,7 +340,14 @@ class _SalesPageState extends State<SalesPage> {
     if (ScopedModel.of<MainModel>(context).billedItems.length == 0) {
       return;
     }
-    _showPopup(HomePagePopups.FinishOrder);
+
+    Messages.confirmMessage(
+        head: 'Are you sure?',
+        body: "This action will finish the order",
+        onConfirm: () {
+          _showPopup(HomePagePopups.FinishOrder);
+        },
+        onCancell: () {});
   }
 
   _showPopup(HomePagePopups pop) {
@@ -348,7 +357,13 @@ class _SalesPageState extends State<SalesPage> {
   _reFillNoteClick() {}
 
   _clearClick() {
-    ScopedModel.of<MainModel>(context).clearBill();
+    Messages.confirmMessage(
+        head: 'Are you sure?',
+        body: "This action will clear the current bill.",
+        onConfirm: () {
+          ScopedModel.of<MainModel>(context).clearBill();
+        },
+        onCancell: () {});
   }
 
   _closePopup() {
