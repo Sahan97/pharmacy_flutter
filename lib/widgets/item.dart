@@ -52,7 +52,9 @@ class _ItemViewState extends State<ItemView> {
                 CodeView(
                   code: widget.item.code,
                 ),
-                NameView(name: widget.item.name),
+                NameView(
+                    name:
+                        '${widget.item.name} ${widget.item.priceCategory.isEmpty ? '' : ' - (${widget.item.priceCategory})'}'),
                 PriceView(price: widget.item.currentQty, color: Colors.grey),
                 widget.isCashier
                     ? Container()
@@ -206,7 +208,7 @@ class PriceView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return price == 0
+    return (price == 0 || price == null)
         ? Container(
             width: 90,
             height: 50,

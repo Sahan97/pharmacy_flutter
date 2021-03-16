@@ -199,13 +199,13 @@ class ApiService {
     return response;
   }
 
-  Future updateItemCall(dynamic data) async {
+  Future<CommonResponse> updateItemCall(dynamic data) async {
     CommonResponse response =
         await _performRequest('/lg/item/update', RequestType.post, body: data);
     return response;
   }
 
-  Future reFillItemCall(dynamic data) async {
+  Future<CommonResponse> reFillItemCall(dynamic data) async {
     CommonResponse response =
         await _performRequest('/lg/item/refill', RequestType.post, body: data);
     return response;

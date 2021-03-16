@@ -15,6 +15,8 @@ class EditItem extends StatefulWidget {
   _EditItemState createState() => _EditItemState();
 }
 
+final priceCategories = ["ONE", "BOTTLE", "TUBE", "ML"];
+
 class _EditItemState extends State<EditItem> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isBusy = false;
@@ -42,6 +44,8 @@ class _EditItemState extends State<EditItem> {
                                 itemToSend.name = value;
                                 itemToSend.id =
                                     model.items[model.editItemIndex].id;
+                                itemToSend.buyPrice =
+                                    model.items[model.editItemIndex].buyPrice;
                               },
                               onValidate: (String value) {
                                 if (value.isEmpty) {
@@ -50,7 +54,7 @@ class _EditItemState extends State<EditItem> {
                                 return null;
                               },
                               autofocus: true,
-                              width: 400,
+                              width: 500,
                             ),
                             InputField(
                               initialValue:
@@ -67,7 +71,42 @@ class _EditItemState extends State<EditItem> {
                                 return null;
                               },
                               autofocus: true,
-                              width: 400,
+                              width: 500,
+                            ),
+                            InputField(
+                              initialValue: model
+                                  .items[model.editItemIndex].sellPrice
+                                  .toStringAsFixed(0),
+                              icon: Icons.monetization_on,
+                              labelText: 'Sell Price',
+                              onSaved: (String value) {
+                                itemToSend.sellPrice = double.parse(value);
+                              },
+                              onValidate: (String value) {
+                                if (value.isEmpty) {
+                                  return 'Please enter sell price';
+                                }
+                                return null;
+                              },
+                              width: 500,
+                              isNumberOnly: true,
+                            ),
+                            InputFieldDropDown(
+                              initialValue: model
+                                  .items[model.editItemIndex].priceCategory,
+                              icon: Icons.picture_in_picture_alt_outlined,
+                              labelText: 'Price Category',
+                              onSaved: (String value) {
+                                itemToSend.priceCategory = value;
+                              },
+                              onValidate: (String value) {
+                                if (value == null) {
+                                  return 'Please select price category';
+                                }
+                                return null;
+                              },
+                              values: priceCategories,
+                              width: 500,
                             ),
                             InputField(
                               initialValue: model
@@ -85,7 +124,7 @@ class _EditItemState extends State<EditItem> {
                               onValidate: (String value) {
                                 return null;
                               },
-                              width: 400,
+                              width: 500,
                               isNumberOnly: true,
                             ),
                             InputField(
@@ -104,25 +143,7 @@ class _EditItemState extends State<EditItem> {
                               onValidate: (String value) {
                                 return null;
                               },
-                              width: 400,
-                              isNumberOnly: true,
-                            ),
-                            InputField(
-                              initialValue: model
-                                  .items[model.editItemIndex].sellPrice
-                                  .toStringAsFixed(0),
-                              icon: Icons.monetization_on,
-                              labelText: 'Sell Price',
-                              onSaved: (String value) {
-                                itemToSend.sellPrice = double.parse(value);
-                              },
-                              onValidate: (String value) {
-                                if (value.isEmpty) {
-                                  return 'Please enter sell price';
-                                }
-                                return null;
-                              },
-                              width: 400,
+                              width: 500,
                               isNumberOnly: true,
                             ),
                             ButtonBar(
@@ -163,29 +184,23 @@ class _EditItemState extends State<EditItem> {
     setState(() {
       _isBusy = true;
     });
-    print(itemToSend.toJson());
     ApiService.shared.updateItemCall({
+      "itemId": itemToSend.id,
       "name": itemToSend.name,
-      "isDeleted": false,
-      "quantity": itemToSend.currentQty,
+      "code": itemToSend.code,
       "sellPrice": itemToSend.sellPrice,
-      "itemId": itemToSend.id
+      "priceCategory": itemToSend.priceCategory,
+      "currentQty": itemToSend.currentQty,
+      "reOrderQty": itemToSend.reOrderQty,
     }).then((value) {
       setState(() {
         _isBusy = false;
       });
-      if (value.message == 'item_name_exist') {
-        Item item = Item.fromJson(value.data);
-        Messages.simpleMessage(
-            head: 'Item Name Already exists!',
-            body: 'Item name you entered \'${item.name}\' is already exists.');
-      } else {
+      if (value.success) {
         model.items[model.editItemIndex] = itemToSend;
         model.setManageItemPopup(ManageItemPopup.NoPopup);
-        Messages.simpleMessage(
-            head: 'Successfull!',
-            body: 'You have successfully updated the item');
       }
+      Messages.simpleMessage(head: value.title, body: value.subtitle);
     });
   }
 }

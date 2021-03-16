@@ -55,20 +55,22 @@ class InputField extends StatelessWidget {
 class InputFieldDropDown extends StatefulWidget {
   final String labelText;
   final IconData icon;
-  final Function onChange;
+  final Function onSaved;
   final double width;
   final TextEditingController controller;
   final List<String> values;
   final String initialValue;
+  final Function onValidate;
   const InputFieldDropDown(
       {Key key,
       @required this.icon,
       @required this.labelText,
-      @required this.onChange,
+      @required this.onSaved,
       @required this.values,
+      @required this.onValidate,
       this.width = 300,
       this.controller,
-      this.initialValue = ''})
+      this.initialValue})
       : super(key: key);
   @override
   _InputFieldDropDownState createState() => _InputFieldDropDownState();
@@ -79,7 +81,9 @@ class _InputFieldDropDownState extends State<InputFieldDropDown> {
 
   @override
   void initState() {
-    selectedValue = widget.initialValue;
+    selectedValue = (widget.initialValue == null || widget.initialValue == '')
+        ? null
+        : widget.initialValue;
     super.initState();
   }
 
@@ -89,6 +93,11 @@ class _InputFieldDropDownState extends State<InputFieldDropDown> {
       margin: EdgeInsets.only(bottom: 20),
       width: widget.width,
       child: FormField<String>(
+        onSaved: (value) {
+          widget.onSaved(value);
+        },
+        initialValue: selectedValue,
+        validator: widget.onValidate,
         builder: (FormFieldState<String> state) {
           return InputDecorator(
             decoration: InputDecoration(
@@ -96,7 +105,7 @@ class _InputFieldDropDownState extends State<InputFieldDropDown> {
               labelStyle: TextStyle(fontSize: 18),
               prefixIcon: Icon(widget.icon),
             ),
-            isEmpty: selectedValue == '',
+            isEmpty: (selectedValue == null || selectedValue == ''),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
                 value: selectedValue,
@@ -105,7 +114,6 @@ class _InputFieldDropDownState extends State<InputFieldDropDown> {
                   setState(() {
                     selectedValue = newValue;
                     state.didChange(newValue);
-                    widget.onChange(newValue);
                   });
                 },
                 items: widget.values.map((String value) {

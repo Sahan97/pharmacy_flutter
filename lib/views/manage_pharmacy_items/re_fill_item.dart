@@ -10,6 +10,8 @@ import 'package:communication/widgets/loading_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
+import 'edit_item.dart';
+
 class ReFillItem extends StatefulWidget {
   ReFillItem({Key key}) : super(key: key);
   @override
@@ -21,7 +23,7 @@ class _ReFillItemState extends State<ReFillItem> {
   bool _isBusy = false;
   Item itemToSend;
   double quantity;
-  List<String> barcodes = [];
+  // List<String> barcodes = [];
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant(builder: (context, child, MainModel model) {
@@ -46,95 +48,88 @@ class _ReFillItemState extends State<ReFillItem> {
                         onValidate: (String value) {
                           return null;
                         },
-                        width: 400,
+                        width: 500,
                       ),
-                      // InputField(
-                      //   autofocus: true,
-                      //   initialValue: itemToSend.buy.seller,
-                      //   icon: Icons.person,
-                      //   labelText: 'Seller\'s name',
-                      //   onSaved: (String value) {
-                      //     if (value.isEmpty) {
-                      //       itemToSend.buy.seller = 'unknown seller';
-                      //     } else {
-                      //       itemToSend.buy.seller = value;
-                      //     }
-                      //   },
-                      //   onValidate: (String value) {
-                      //     return null;
-                      //   },
-                      //   width: 400,
-                      // ),
-                      // InputField(
-                      //   icon: Icons.check_circle_outline,
-                      //   labelText: 'ReFill Quantity',
-                      //   onSaved: (String value) {
-                      //     quantity = double.parse(value);
-                      //   },
-                      //   onValidate: (String value) {
-                      //     if (value.isEmpty) {
-                      //       return 'Please enter Re-Fill quantity';
-                      //     }
-                      //     return null;
-                      //   },
-                      //   width: 400,
-                      //   isNumberOnly: true,
-                      // ),
-                      // InputField(
-                      //   initialValue:
-                      //       itemToSend.buy.buyPricePerItem.toStringAsFixed(0),
-                      //   icon: Icons.attach_money,
-                      //   labelText: 'Buy Price',
-                      //   onSaved: (String value) {
-                      //     itemToSend.buy.buyPricePerItem = double.parse(value);
-                      //   },
-                      //   onValidate: (String value) {
-                      //     if (value.isEmpty) {
-                      //       return 'Please enter buy price';
-                      //     }
-                      //     return null;
-                      //   },
-                      //   width: 400,
-                      //   isNumberOnly: true,
-                      // ),
-                      // InputField(
-                      //   initialValue:
-                      //       itemToSend.sellPricePerItem.toStringAsFixed(0),
-                      //   icon: Icons.monetization_on,
-                      //   labelText: 'Sell Price',
-                      //   onSaved: (String value) {
-                      //     itemToSend.sellPricePerItem = double.parse(value);
-                      //   },
-                      //   onValidate: (String value) {
-                      //     if (value.isEmpty) {
-                      //       return 'Please enter sell price';
-                      //     }
-                      //     return null;
-                      //   },
-                      //   width: 400,
-                      //   isNumberOnly: true,
-                      // ),
-                      // InputField(
-                      //   initialValue: itemToSend.discount.toStringAsFixed(0),
-                      //   icon: Icons.money_off,
-                      //   labelText: 'Discount',
-                      //   onSaved: (String value) {
-                      //     if (value.isEmpty) {
-                      //       itemToSend.discount = 0;
-                      //     } else {
-                      //       itemToSend.discount = double.parse(value);
-                      //     }
-                      //   },
-                      //   onValidate: (String value) {
-                      //     return null;
-                      //   },
-                      //   width: 400,
-                      //   isNumberOnly: true,
-                      // ),
-                      // MyChipInput(
-                      //   myListCustom: barcodes,
-                      //   addChips: _addBarcode,
-                      // ),
+                      InputField(
+                        icon: Icons.check_circle_outline,
+                        labelText: 'ReFill Quantity',
+                        onSaved: (String value) {
+                          itemToSend.currentQty = double.parse(value);
+                        },
+                        onValidate: (String value) {
+                          if (value.isEmpty) {
+                            return 'Please enter Re-Fill quantity';
+                          }
+                          return null;
+                        },
+                        width: 500,
+                        isNumberOnly: true,
+                        initialValue: '',
+                      ),
+                      InputField(
+                        icon: Icons.check_circle_outline,
+                        labelText: 'Re Order Quantity',
+                        onSaved: (String value) {
+                          itemToSend.reOrderQty = double.parse(value);
+                        },
+                        onValidate: (String value) {
+                          if (value.isEmpty) {
+                            return 'Please enter Re-Order quantity';
+                          }
+                          return null;
+                        },
+                        width: 500,
+                        isNumberOnly: true,
+                        initialValue: itemToSend.reOrderQty.toStringAsFixed(0),
+                      ),
+                      InputFieldDropDown(
+                        initialValue: itemToSend.priceCategory,
+                        icon: Icons.picture_in_picture_alt_outlined,
+                        labelText: 'Price Category',
+                        onSaved: (String value) {
+                          itemToSend.priceCategory = value;
+                        },
+                        onValidate: (String value) {
+                          if (value == null) {
+                            return 'Please select price category';
+                          }
+                          return null;
+                        },
+                        values: priceCategories,
+                        width: 500,
+                      ),
+                      InputField(
+                        initialValue: itemToSend.buyPrice.toStringAsFixed(0),
+                        icon: Icons.attach_money,
+                        labelText: 'Buy Price',
+                        onSaved: (String value) {
+                          itemToSend.buyPrice = double.parse(value);
+                        },
+                        onValidate: (String value) {
+                          if (value.isEmpty) {
+                            return 'Please enter buy price';
+                          }
+                          return null;
+                        },
+                        width: 500,
+                        isNumberOnly: true,
+                      ),
+                      InputField(
+                        initialValue: itemToSend.sellPrice.toStringAsFixed(0),
+                        icon: Icons.monetization_on,
+                        labelText: 'Sell Price',
+                        onSaved: (String value) {
+                          itemToSend.sellPrice = double.parse(value);
+                        },
+                        onValidate: (String value) {
+                          if (value.isEmpty) {
+                            return 'Please enter sell price';
+                          }
+                          return null;
+                        },
+                        width: 500,
+                        isNumberOnly: true,
+                      ),
                       ButtonBar(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -149,7 +144,7 @@ class _ReFillItemState extends State<ReFillItem> {
                             onPressed: () {
                               _onUpdate(model);
                             },
-                            text: 'Update',
+                            text: 'Re Fill',
                             isBusy: _isBusy,
                           )
                         ],
@@ -165,11 +160,11 @@ class _ReFillItemState extends State<ReFillItem> {
     });
   }
 
-  _addBarcode(String code) {
-    setState(() {
-      barcodes.add(code);
-    });
-  }
+  // _addBarcode(String code) {
+  //   setState(() {
+  //     barcodes.add(code);
+  //   });
+  // }
 
   _onUpdate(MainModel model) {
     if (!_formKey.currentState.validate()) {
@@ -180,22 +175,24 @@ class _ReFillItemState extends State<ReFillItem> {
       _isBusy = true;
     });
     ApiService.shared.reFillItemCall({
-      "quantity": quantity,
-      // "sellPrice": itemToSend.sellPricePerItem,
-      // "discount": itemToSend.discount,
-      // "seller": itemToSend.buy.seller,
-      // "buyPrice": itemToSend.buy.buyPricePerItem,
-      // "itemId": itemToSend.id,
-      "barcodes": barcodes
+      "itemId": itemToSend.id,
+      "priceCategory": itemToSend.priceCategory,
+      "buyPrice": itemToSend.buyPrice,
+      "sellPrice": itemToSend.sellPrice,
+      "reOrderQty": itemToSend.reOrderQty,
+      "qty": itemToSend.currentQty,
     }).then((value) {
       setState(() {
         _isBusy = false;
       });
-      // itemToSend.availableQuantity = itemToSend.availableQuantity + quantity;
-      model.items[model.editItemIndex] = itemToSend;
-      model.setManageItemPopup(ManageItemPopup.NoPopup);
-      Messages.simpleMessage(
-          head: 'Successfull!', body: 'You have successfully Re-Fill the item');
+      if (value.success) {
+        itemToSend.currentQty =
+            double.parse(value.data['currentQty'].toString());
+        model.items[model.editItemIndex] = itemToSend;
+        model.setManageItemPopup(ManageItemPopup.NoPopup);
+      }
+
+      Messages.simpleMessage(head: value.title, body: value.subtitle);
     });
   }
 }
