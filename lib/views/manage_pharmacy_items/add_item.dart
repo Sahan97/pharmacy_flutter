@@ -1,9 +1,11 @@
 import 'package:communication/helpers/api_service.dart';
+import 'package:communication/model/item.dart';
 import 'package:communication/widgets/Messages.dart';
-import 'package:communication/widgets/chip_input.dart';
 import 'package:communication/widgets/input_field.dart';
 import 'package:communication/widgets/loading_btn.dart';
 import 'package:flutter/material.dart';
+
+import 'edit_item.dart';
 
 class AddItem extends StatefulWidget {
   AddItem({Key key}) : super(key: key);
@@ -14,10 +16,8 @@ class AddItem extends StatefulWidget {
 
 class _AddItemState extends State<AddItem> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String name, seller;
-  double quantity, sellPricePerItem, buyPricePerItem, discount;
+  Item newItem = Item();
   bool _isBusy = false;
-  List<String> barcodes = [];
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class _AddItemState extends State<AddItem> {
                   icon: Icons.note_add,
                   labelText: 'Item Name',
                   onSaved: (value) {
-                    name = value;
+                    newItem.name = value;
                   },
                   onValidate: (String value) {
                     if (value.isEmpty) {
@@ -45,89 +45,102 @@ class _AddItemState extends State<AddItem> {
                     return null;
                   },
                   autofocus: true,
-                  width: 400,
+                  width: 500,
                 ),
                 InputField(
-                  icon: Icons.check_circle_outline,
-                  labelText: 'Quantity',
-                  onSaved: (String value) {
-                    if (value.isEmpty) {
-                      quantity = 0;
-                    } else {
-                      quantity = double.parse(value);
-                    }
+                  icon: Icons.note_add,
+                  labelText: 'Item Code',
+                  onSaved: (value) {
+                    newItem.code = value;
                   },
                   onValidate: (String value) {
+                    if (value.isEmpty) {
+                      return 'Please enter item code';
+                    }
                     return null;
                   },
-                  width: 400,
-                  isNumberOnly: true,
+                  autofocus: true,
+                  width: 500,
+                ),
+                InputFieldDropDown(
+                  initialValue: newItem.priceCategory,
+                  icon: Icons.picture_in_picture_alt_outlined,
+                  labelText: 'Price Category',
+                  onSaved: (String value) {
+                    newItem.priceCategory = value;
+                  },
+                  onValidate: (String value) {
+                    if (value == null) {
+                      return 'Please select price category';
+                    }
+                    return null;
+                  },
+                  values: priceCategories,
+                  width: 500,
                 ),
                 InputField(
-                    icon: Icons.person,
-                    labelText: 'Seller',
-                    onSaved: (String value) {
-                      if (value.isEmpty) {
-                        seller = 'unknown seller';
-                      } else {
-                        seller = value;
-                      }
-                    },
-                    onValidate: (String value) {
-                      return null;
-                    },
-                    width: 400),
-                InputField(
-                  icon: Icons.attach_money,
+                  icon: Icons.monetization_on,
                   labelText: 'Buy Price',
                   onSaved: (String value) {
                     if (value.isEmpty) {
-                      buyPricePerItem = 0;
+                      newItem.buyPrice = 0;
                     } else {
-                      buyPricePerItem = double.parse(value);
+                      newItem.buyPrice = double.parse(value);
                     }
                   },
                   onValidate: (String value) {
                     return null;
                   },
-                  width: 400,
+                  width: 500,
                   isNumberOnly: true,
                 ),
                 InputField(
                   icon: Icons.monetization_on,
                   labelText: 'Sell Price',
                   onSaved: (String value) {
-                    sellPricePerItem = double.parse(value);
+                    if (value.isEmpty) {
+                      newItem.sellPrice = 0;
+                    } else {
+                      newItem.sellPrice = double.parse(value);
+                    }
                   },
                   onValidate: (String value) {
-                    if (value.isEmpty) {
-                      return 'Please enter sell price';
-                    }
                     return null;
                   },
-                  width: 400,
+                  width: 500,
                   isNumberOnly: true,
                 ),
                 InputField(
-                  icon: Icons.money_off,
-                  labelText: 'Discount',
+                  icon: Icons.check_circle_outline,
+                  labelText: 'Quantity',
                   onSaved: (String value) {
                     if (value.isEmpty) {
-                      discount = 0;
+                      newItem.currentQty = 0;
                     } else {
-                      discount = double.parse(value);
+                      newItem.currentQty = double.parse(value);
                     }
                   },
                   onValidate: (String value) {
                     return null;
                   },
-                  width: 400,
+                  width: 500,
                   isNumberOnly: true,
-                  initialValue: '0',
                 ),
-                MyChipInput(
-                  myListCustom: barcodes,
-                  addChips: _addBarcode,
+                InputField(
+                  icon: Icons.check_circle_outline,
+                  labelText: 'Re Order QTY',
+                  onSaved: (String value) {
+                    if (value.isEmpty) {
+                      newItem.reOrderQty = 0;
+                    } else {
+                      newItem.reOrderQty = double.parse(value);
+                    }
+                  },
+                  onValidate: (String value) {
+                    return null;
+                  },
+                  width: 500,
+                  isNumberOnly: true,
                 ),
                 ButtonBar(
                   mainAxisSize: MainAxisSize.min,
@@ -154,11 +167,11 @@ class _AddItemState extends State<AddItem> {
     );
   }
 
-  _addBarcode(String code) {
-    setState(() {
-      barcodes.add(code);
-    });
-  }
+  // _addBarcode(String code) {
+  //   setState(() {
+  //     barcodes.add(code);
+  //   });
+  // }
 
   _onSubmit() {
     if (!_formKey.currentState.validate()) {
@@ -169,17 +182,20 @@ class _AddItemState extends State<AddItem> {
       _isBusy = true;
     });
     ApiService.shared.createItemCall({
-      "name": name,
-      "quantity": quantity,
-      "sellPricePerItem": sellPricePerItem,
-      "discount": discount,
-      "seller": seller,
-      "buyPricePerItem": buyPricePerItem,
-      "barcodes": barcodes
+      "name": newItem.name,
+      "code": newItem.code,
+      "priceCategory": newItem.priceCategory,
+      "buyPrice": newItem.buyPrice,
+      "sellPrice": newItem.sellPrice,
+      "currentQty": newItem.currentQty,
+      "reOrderQty": newItem.reOrderQty
     }).then((value) {
       setState(() {
         _isBusy = false;
       });
+      if (value.success) {
+        _formKey.currentState.reset();
+      }
       Messages.simpleMessage(head: value.title, body: value.subtitle);
     });
   }
