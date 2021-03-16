@@ -94,8 +94,8 @@ class _AllItemsState extends State<AllItems> {
             ),
             Expanded(
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-                margin: EdgeInsets.only(right: 20),
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                margin: EdgeInsets.only(right: 20, top: 2, bottom: 2),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     border: Border.all(
@@ -186,7 +186,7 @@ class _AllItemsState extends State<AllItems> {
     setState(() {
       _isBusy = true;
     });
-    ApiService.shared.getItemsCall(null).then((value) {
+    ApiService.shared.getItemsCall().then((value) {
       setState(() {
         _isBusy = false;
         allItems = value;

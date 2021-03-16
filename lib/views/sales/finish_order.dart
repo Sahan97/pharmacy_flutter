@@ -159,7 +159,7 @@ class _FinishOrderState extends State<FinishOrder> {
           Expanded(
             child: Container(
               child: Text(
-                "Name",
+                "Customer",
                 style: TextStyle(
                     fontSize: 25,
                     color: Colors.purple,
@@ -209,26 +209,25 @@ class _FinishOrderState extends State<FinishOrder> {
     setState(() {
       finishLoading = true;
     });
-    var saleItems = [];
+    var pharmacyItems = [];
     var forPrint = [];
     ScopedModel.of<MainModel>(context).billedItems.forEach((element) {
-      // saleItems.add({
-      //   "quantity": element.sellQuantity,
-      //   "lastSellPrice": element.isDiscountAdd
-      //       ? element.sellPricePerItem * (100 - element.discount) / 100
-      //       : element.sellPricePerItem,
-      //   "id": element.id,
-      //   "isDiscountGiven": element.isDiscountAdd
-      // });
-      // forPrint.add({
-      //   "name": element.name,
-      //   "qty": element.sellQuantity,
-      //   "pricePerItem": element.sellPricePerItem
-      // });
+      pharmacyItems.add({
+        "itemId": element.id,
+        "qty": element.sellQuantity,
+        "itemPrice": element.sellPrice,
+      });
+      forPrint.add({
+        "name": element.name,
+        "qty": element.sellQuantity,
+        "pricePerItem": element.sellPrice
+      });
     });
     ApiService.shared.createSaleCall({
       "customer": name.isEmpty ? 'unknown customer' : name,
-      "saleItems": saleItems
+      "pharmacyItems": pharmacyItems,
+      "stationaryItems": [],
+      "otherCharges": []
     }).then((value) {
       setState(() {
         finishLoading = false;

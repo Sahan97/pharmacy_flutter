@@ -2,6 +2,7 @@ import 'package:communication/helpers/api_service.dart';
 import 'package:communication/model/item.dart';
 import 'package:communication/scoped_model/main.dart';
 import 'package:communication/views/home_page/home_page.dart';
+import 'package:communication/widgets/Messages.dart';
 import 'package:communication/widgets/blackout.dart';
 import 'package:communication/widgets/item.dart';
 import 'package:communication/widgets/loading_btn.dart';
@@ -33,8 +34,7 @@ class _ItemFinderState extends State<ItemFinder> {
     setState(() {
       filteredItems = null;
     });
-    List<Item> items =
-        await ApiService.shared.getItemsCall({'isDeleted': false});
+    List<Item> items = await ApiService.shared.getActiveItemsCall();
     ScopedModel.of<MainModel>(context).setItems(items);
     filteredItems = ScopedModel.of<MainModel>(context).items;
     ScopedModel.of<MainModel>(context).focusItemFinder();
@@ -103,7 +103,17 @@ class _ItemFinderState extends State<ItemFinder> {
   }
 
   _onItemSelected(Item item) {
-    ScopedModel.of<MainModel>(context).addToBill(item);
+    if (ScopedModel.of<MainModel>(context)
+            .billedItems
+            .indexWhere((element) => element.id == item.id) ==
+        -1) {
+      ScopedModel.of<MainModel>(context).addToBill(item);
+    } else {
+      Messages.simpleMessage(
+          head: "Item already added!",
+          body: 'Same item cannot add more than one time.');
+    }
+
     _onClose();
   }
 
@@ -124,7 +134,7 @@ class _ItemFinderState extends State<ItemFinder> {
             ),
             Expanded(
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                 margin: EdgeInsets.only(right: 20),
                 decoration: BoxDecoration(
                     color: Colors.white,
@@ -204,15 +214,12 @@ class _ItemFinderState extends State<ItemFinder> {
       color: Colors.white,
       child: Row(
         children: [
-          SizedBox(
-            width: 10,
-          ),
+          LabelText('Code', Colors.black),
           Expanded(
             child: LabelText('Name', Colors.black, al: Alignment.centerLeft),
           ),
           LabelText('Available', Colors.grey),
-          LabelText('Sell', Colors.green),
-          LabelText('Discount', Colors.orange),
+          LabelText('Price', Colors.green),
           SizedBox(
             width: 24,
           )

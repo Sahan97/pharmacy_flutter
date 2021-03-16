@@ -18,15 +18,14 @@ class SaleItem extends StatefulWidget {
 
 class _SaleItemState extends State<SaleItem> {
   double price = 0;
-  double quantity = 1;
+  double quantity = 0;
   var focusNode = new FocusNode();
   final qtyController = TextEditingController();
 
   @override
   void initState() {
     focusNode.requestFocus();
-    qtyController.text =
-        widget.item.currentQty > 0 ? quantity.toStringAsFixed(0) : '0';
+    qtyController.text = '';
     super.initState();
   }
 
@@ -37,13 +36,20 @@ class _SaleItemState extends State<SaleItem> {
       child: Row(
         children: [
           _remove(),
+          CodeView(
+            code: widget.item.code,
+          ),
           NameView(
-            name: widget.item.name,
+            name:
+                '${widget.item.name} ${widget.item.priceCategory.isEmpty ? '' : ' - (${widget.item.priceCategory})'}',
           ),
           _qty(),
           PriceView(
             price: widget.item.sellPrice,
             color: Colors.blue,
+          ),
+          SizedBox(
+            width: 14,
           ),
           PriceView(
             price: price,
@@ -84,7 +90,7 @@ class _SaleItemState extends State<SaleItem> {
           borderRadius: BorderRadius.circular(10),
           border: Border.all(width: 3, color: Colors.grey)),
       padding: EdgeInsets.symmetric(horizontal: 10),
-      margin: EdgeInsets.symmetric(horizontal: 40),
+      margin: EdgeInsets.symmetric(horizontal: 34),
       child: TextFormField(
         controller: qtyController,
         focusNode: focusNode,

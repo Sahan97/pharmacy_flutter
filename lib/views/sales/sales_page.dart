@@ -71,12 +71,22 @@ class _SalesPageState extends State<SalesPage> {
                           children: [
                             LoadingBtn(
                               onPressed: _itemFinderClick,
-                              text: 'Item Finder (F1)',
+                              text: 'Pharmacy Items (F1)',
+                              color: Colors.green,
+                            ),
+                            LoadingBtn(
+                              onPressed: _itemFinderClick,
+                              text: 'Stationary Items (F2)',
+                              color: Colors.green,
+                            ),
+                            LoadingBtn(
+                              onPressed: _itemFinderClick,
+                              text: 'Other Charges (F3)',
                               color: Colors.green,
                             ),
                             LoadingBtn(
                               onPressed: _finishOrderClick,
-                              text: 'Finish Order (F2)',
+                              text: 'Finish Order (F4)',
                               color: Colors.orange,
                             ),
                             Spacer(),
@@ -87,7 +97,7 @@ class _SalesPageState extends State<SalesPage> {
                             // ),
                             LoadingBtn(
                               onPressed: _clearClick,
-                              text: 'Clear (F4)',
+                              text: 'Clear (F5)',
                               color: Colors.red,
                             )
                           ],
@@ -145,29 +155,29 @@ class _SalesPageState extends State<SalesPage> {
       child: Row(
         children: [
           SizedBox(
-            width: 40,
+            width: 35,
           ),
+          LabelText('Code', Colors.black),
           Expanded(
-              child: Container(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                LabelText(
-                  'Name',
-                  Colors.black,
-                  al: Alignment.centerLeft,
-                ),
-                _barcodeField()
-              ],
+            child: Container(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  LabelText(
+                    'Name',
+                    Colors.black,
+                    al: Alignment.centerLeft,
+                  ),
+                  _barcodeField()
+                ],
+              ),
             ),
-          )),
+          ),
           _devider(),
           LabelText('Qty', Colors.black),
           _devider(),
           LabelText('Item Price', Colors.black),
-          _devider(),
-          LabelText('Discount', Colors.black),
           _devider(),
           LabelText('Price', Colors.black),
         ],
@@ -186,7 +196,7 @@ class _SalesPageState extends State<SalesPage> {
 
   Widget _barcodeField() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
       margin: EdgeInsets.only(right: 20),
       decoration: BoxDecoration(
           color: Colors.white,
@@ -293,17 +303,21 @@ class _SalesPageState extends State<SalesPage> {
 
   _onKeyPressHandler(RawKeyEvent key) {
     if (key.runtimeType.toString() == 'RawKeyDownEvent') {
+      print(key.logicalKey.keyId);
       switch (key.logicalKey.keyId) {
-        case 4295426106:
+        case 4295426106: //F1
           _itemFinderClick();
           break;
-        case 4295426107:
+        case 4295426107: //F2
+
+          break;
+        case 4295426108: //F3
+
+          break;
+        case 4295426109: //F4
           _finishOrderClick();
           break;
-        case 4295426108:
-          _reFillNoteClick();
-          break;
-        case 4295426109:
+        case 4295426110: //F5
           _clearClick();
           break;
         case 4295426089:

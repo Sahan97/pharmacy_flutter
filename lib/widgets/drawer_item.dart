@@ -29,10 +29,7 @@ class DrawerItem extends StatelessWidget {
         leading: Icon(icon),
         title: Text(
           title,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20
-          ),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
       ),
     );

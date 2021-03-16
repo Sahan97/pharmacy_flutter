@@ -182,9 +182,19 @@ class ApiService {
     return response;
   }
 
-  Future<List<Item>> getItemsCall(dynamic data) async {
+  Future<List<Item>> getItemsCall() async {
     CommonResponse response =
-        await _performRequest('/lg/item/getAll', RequestType.get, body: data);
+        await _performRequest('/lg/item/getAll', RequestType.get);
+    return List<Item>.from(
+      response.data.map(
+        (item) => Item.fromJson(item),
+      ),
+    );
+  }
+
+  Future<List<Item>> getActiveItemsCall() async {
+    CommonResponse response =
+        await _performRequest('/lg/item/all_active', RequestType.get);
     return List<Item>.from(
       response.data.map(
         (item) => Item.fromJson(item),
