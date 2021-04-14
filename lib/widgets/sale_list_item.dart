@@ -2,7 +2,6 @@ import 'package:communication/model/sale.dart';
 import 'package:communication/scoped_model/main.dart';
 import 'package:communication/views/admin_sales_page/Admin_sales_page.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class SaleListItem extends StatefulWidget {
@@ -42,9 +41,19 @@ class _ItemViewState extends State<SaleListItem> {
               width: 20,
             ),
             Container(
-                width: 150,
+              width: 140,
+              child: Text(
+                widget.item.date,
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 17,
+                ),
+              ),
+            ),
+            Container(
+                width: 140,
                 child: Text(
-                  DateFormat('yyyy-MM-dd').format(widget.item.date),
+                  widget.item.time,
                   style: TextStyle(
                     color: Colors.grey,
                     fontSize: 17,
@@ -52,7 +61,7 @@ class _ItemViewState extends State<SaleListItem> {
                 )),
             NameView(name: widget.item.customer, al: TextAlign.left),
             PriceView(
-                price: double.parse(widget.item.totalAmount.toString()),
+                price: double.parse(widget.item.totalPrice.toString()),
                 color: Colors.green),
             SizedBox(
               width: 40,

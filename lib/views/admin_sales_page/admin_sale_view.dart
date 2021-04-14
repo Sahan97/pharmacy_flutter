@@ -22,11 +22,10 @@ class AdminSaleView extends StatelessWidget {
               child: Column(
                 children: [
                   _itemDetail('Sale Id', item.id),
-                  _itemDetail(
-                      'Date', DateFormat('yyyy MMM dd').format(item.date)),
+                  _itemDetail('Date', item.date),
+                  _itemDetail('Time', item.time),
                   _itemDetail('Customer', item.customer),
-                  _itemDetail('Cashier', item.cashier.name),
-                  _itemDetail('Total Amount', item.totalAmount),
+                  _itemDetail('Total Amount', item.totalPrice),
                   SizedBox(
                     height: 10,
                   ),
@@ -41,17 +40,18 @@ class AdminSaleView extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 _tableHead(
-                                  'Item Name',
-                                  230,
+                                  'Item / charge',
+                                  400,
                                 ),
-                                _tableHead('Qty', 50),
-                                _tableHead('Last Price', 100),
-                                _tableHead('Discount', 100),
+                                _tableHead('Qty', 50, al: TextAlign.center),
+                                _tableHead('Item Price', 100,
+                                    al: TextAlign.center),
+                                _tableHead('Price', 120, al: TextAlign.center),
                               ],
                             ),
                           ),
                           Column(
-                            children: item.saleItems
+                            children: item.pharmacyItems
                                 .map(
                                   (e) => Container(
                                     padding: EdgeInsets.symmetric(vertical: 5),
@@ -61,19 +61,51 @@ class AdminSaleView extends StatelessWidget {
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        _tableHead(e.item.name, 230,
+                                        _tableHead(e.item.name, 400,
                                             color: Colors.black),
                                         _tableHead(e.quantity.toString(), 50,
                                             color: Colors.black,
-                                            al: TextAlign.right),
+                                            al: TextAlign.center),
                                         _tableHead(
-                                            e.lastSellPrice.toString(), 100,
+                                            e.item.sellPrice.toString(), 100,
                                             color: Colors.black,
-                                            al: TextAlign.right),
+                                            al: TextAlign.center),
                                         _tableHead(
-                                            e.isDiscountGiven ? 'Givev' : '',
-                                            100,
+                                            (e.item.sellPrice * e.quantity)
+                                                .toString(),
+                                            120,
+                                            color: Colors.black,
+                                            al: TextAlign.center),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                          Column(
+                            children: item.otherCharges
+                                .map(
+                                  (e) => Container(
+                                    padding: EdgeInsets.symmetric(vertical: 5),
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Colors.grey, width: 0.5)),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        _tableHead(e.name, 400,
                                             color: Colors.black),
+                                        _tableHead(e.qty.toString(), 50,
+                                            color: Colors.black,
+                                            al: TextAlign.center),
+                                        _tableHead(e.itemPrice.toString(), 100,
+                                            color: Colors.black,
+                                            al: TextAlign.center),
+                                        _tableHead(
+                                            (e.itemPrice * e.qty).toString(),
+                                            120,
+                                            color: Colors.black,
+                                            al: TextAlign.center),
                                       ],
                                     ),
                                   ),

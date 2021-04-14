@@ -277,14 +277,18 @@ class ApiService {
     return response;
   }
 
-  Future<CommonResponse> getSales(DateTime date, String saleId) async {
-    CommonResponse response =
-        await _performRequest('/lg/sale/get', RequestType.get,
-            body: date != null
-                ? {"date": DateFormat('yyyy-MM-dd').format(date)}
-                : saleId != null
-                    ? {"id": saleId}
-                    : null);
+  Future<CommonResponse> getSales(DateTime date, int saleId) async {
+    CommonResponse response;
+    if (saleId != null) {
+      response =
+          await _performRequest('/lg/sale/get_by_id/$saleId', RequestType.get);
+    } else if (date != null) {
+      response = await _performRequest(
+          '/lg/sale/get_by_date/${DateFormat('yyyy-MM-dd').format(date)}',
+          RequestType.get);
+    } else {
+      response = await _performRequest('/lg/sale/get', RequestType.get);
+    }
     return response;
   }
 

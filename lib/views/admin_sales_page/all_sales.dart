@@ -18,15 +18,17 @@ class _AllSalesState extends State<AllSales> {
   List<Sale> sales = [];
   bool _isBusy = false;
   double total = 0;
-  String saleId = '';
+  double totalCost = 0;
+  int saleId;
   final dateController = TextEditingController();
+  final idController = TextEditingController();
   @override
   void initState() {
     getSales(null, null);
     super.initState();
   }
 
-  getSales(DateTime date, String saleId) {
+  getSales(DateTime date, int saleId) {
     setState(() {
       _isBusy = true;
       total = 0;
@@ -39,10 +41,17 @@ class _AllSalesState extends State<AllSales> {
         setState(() {
           sales = List<Sale>.from(value.data.map((x) => Sale.fromJson(x)));
         });
+        double tot = 0;
+        double cost = 0;
         sales.forEach((element) {
-          setState(() {
-            total += element.totalAmount;
+          tot += element.totalPrice;
+          element.pharmacyItems.forEach((p) {
+            cost += (p.quantity * p.item.buyPrice);
           });
+        });
+        setState(() {
+          total = tot;
+          totalCost = cost;
         });
       }
     });
@@ -118,7 +127,12 @@ class _AllSalesState extends State<AllSales> {
           ),
           LabelText(
             'Date',
-            Colors.grey,
+            Colors.black,
+            width: 130,
+          ),
+          LabelText(
+            'Time',
+            Colors.black,
             width: 130,
           ),
           SizedBox(
@@ -144,20 +158,46 @@ class _AllSalesState extends State<AllSales> {
       color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Row(
+        child: Column(
           children: [
-            SizedBox(
-              width: 20,
+            Row(
+              children: [
+                SizedBox(
+                  width: 20,
+                ),
+                Text(
+                  'Total Sales',
+                  style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red),
+                ),
+                Spacer(),
+                price.PriceView(price: total, color: Colors.red),
+                SizedBox(
+                  width: 30,
+                ),
+              ],
             ),
-            Text(
-              'Total Sales',
-              style: TextStyle(
-                  fontSize: 30, fontWeight: FontWeight.bold, color: Colors.red),
-            ),
-            Spacer(),
-            price.PriceView(price: total, color: Colors.red),
-            SizedBox(
-              width: 30,
+            Row(
+              children: [
+                SizedBox(
+                  width: 20,
+                ),
+                Text(
+                  'Gross Profit',
+                  style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green),
+                ),
+                Spacer(),
+                price.PriceView(
+                    price: (total - totalCost), color: Colors.green),
+                SizedBox(
+                  width: 30,
+                ),
+              ],
             ),
           ],
         ),
@@ -197,6 +237,7 @@ class _AllSalesState extends State<AllSales> {
                         lastDate: DateTime(2200),
                       );
                       if (selected != null) {
+                        idController.text = '';
                         dateController.text =
                             DateFormat('yyyy-MM-dd').format(selected);
                         getSales(selected, null);
@@ -223,14 +264,15 @@ class _AllSalesState extends State<AllSales> {
                   border: Border.all(color: Colors.grey, width: 2),
                   borderRadius: BorderRadius.circular(8)),
               child: TextField(
+                controller: idController,
                 onChanged: (value) {
                   dateController.text = '';
                   setState(() {
-                    saleId = value;
+                    saleId = int.parse(value);
                   });
                 },
                 onSubmitted: (value) {
-                  getSales(null, value);
+                  getSales(null, int.parse(value));
                 },
                 style: TextStyle(fontSize: 20),
               ),
@@ -238,10 +280,8 @@ class _AllSalesState extends State<AllSales> {
             SizedBox(
               height: 40,
               child: FloatingActionButton(
-                onPressed: () async {
-                  if (saleId.isNotEmpty) {
-                    getSales(null, saleId);
-                  }
+                onPressed: () {
+                  getSales(null, saleId);
                 },
                 child: Center(
                   child: Icon(Icons.search),
@@ -253,6 +293,8 @@ class _AllSalesState extends State<AllSales> {
             ),
             RaisedButton(
               onPressed: () {
+                idController.text = '';
+                dateController.text = '';
                 getSales(null, null);
               },
               child: Text(
