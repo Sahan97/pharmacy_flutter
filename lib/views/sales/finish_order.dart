@@ -210,13 +210,24 @@ class _FinishOrderState extends State<FinishOrder> {
       finishLoading = true;
     });
     var pharmacyItems = [];
+    var otherCharges = [];
     var forPrint = [];
+
     ScopedModel.of<MainModel>(context).billedItems.forEach((element) {
-      pharmacyItems.add({
-        "itemId": element.id,
-        "qty": element.sellQuantity,
-        "itemPrice": element.sellPrice,
-      });
+      if (element.isItem) {
+        pharmacyItems.add({
+          "itemId": element.id,
+          "qty": element.sellQuantity,
+          "itemPrice": element.sellPrice,
+        });
+      } else {
+        otherCharges.add({
+          "name": element.name,
+          "qty": element.sellQuantity,
+          "itemPrice": element.sellPrice
+        });
+      }
+
       forPrint.add({
         "name": element.name,
         "qty": element.sellQuantity,
@@ -227,7 +238,7 @@ class _FinishOrderState extends State<FinishOrder> {
       "customer": name.isEmpty ? 'unknown customer' : name,
       "pharmacyItems": pharmacyItems,
       "stationaryItems": [],
-      "otherCharges": []
+      "otherCharges": otherCharges
     }).then((value) {
       setState(() {
         finishLoading = false;

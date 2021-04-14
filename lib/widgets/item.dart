@@ -245,13 +245,17 @@ class CodeView extends StatelessWidget {
       width: 80,
       height: 50,
       margin: EdgeInsets.only(right: 10, top: 5, bottom: 5),
-      child: Center(
-        child: Text(
-          code,
-          style: TextStyle(
-              color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 13),
-        ),
-      ),
+      child: code == null
+          ? Container()
+          : Center(
+              child: Text(
+                code,
+                style: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13),
+              ),
+            ),
     );
   }
 }

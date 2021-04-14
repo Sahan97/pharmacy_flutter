@@ -8,6 +8,7 @@ class Blackout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OpacityAnimatedWidget.tween(
+      duration: Duration(milliseconds: 200),
       enabled: true,
       child: Container(
         height: double.infinity,
@@ -16,9 +17,10 @@ class Blackout extends StatelessWidget {
         child: Center(
           child: ScaleAnimatedWidget(
             enabled: true,
-            duration: Duration(milliseconds: 500),
-            values: [0, 0.5, 1, 1.1, 0.9, 1],
+            duration: Duration(milliseconds: 200),
+            values: [0, 1],
             child: child,
+            curve: Curves.easeIn,
           ),
         ),
       ),

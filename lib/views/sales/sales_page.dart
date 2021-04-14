@@ -81,8 +81,8 @@ class _SalesPageState extends State<SalesPage> {
                             //   color: Colors.green,
                             // ),
                             LoadingBtn(
-                              onPressed: _itemFinderClick,
-                              text: 'Other Charges (F3)',
+                              onPressed: _chargeFinderClick,
+                              text: 'Other Charges (F2)',
                               color: Colors.green,
                             ),
 
@@ -196,39 +196,6 @@ class _SalesPageState extends State<SalesPage> {
     );
   }
 
-  Widget _barcodeField() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-      margin: EdgeInsets.only(right: 20),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(
-            color: Colors.purple,
-            width: 2,
-          ),
-          borderRadius: BorderRadius.circular(5)),
-      width: 200,
-      child: TextFormField(
-        controller: barCodeContriller,
-        focusNode: ScopedModel.of<MainModel>(context).barCodeFocusNode,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          focusedBorder: InputBorder.none,
-          enabledBorder: InputBorder.none,
-          errorBorder: InputBorder.none,
-          disabledBorder: InputBorder.none,
-        ),
-        onFieldSubmitted: _onBarCodeEnter,
-        cursorColor: Colors.black,
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-  }
-
   Widget _totalPrice() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20),
@@ -270,39 +237,6 @@ class _SalesPageState extends State<SalesPage> {
     return price.toStringAsFixed(0);
   }
 
-  _onBarCodeEnter(String value) {
-    if (value.isNotEmpty) {
-      barCodeContriller.text = '';
-      setState(() {
-        isLoading = true;
-      });
-      ApiService.shared.getItemByBarcodeCall(value).then((value) {
-        setState(() {
-          isLoading = false;
-        });
-        if (value.success) {
-          List<Barcode> barcodes =
-              List<Barcode>.from(value.data.map((x) => Barcode.fromJson(x)));
-          if (barcodes.length == 1) {
-            ScopedModel.of<MainModel>(context).addToBill(barcodes[0].item);
-          } else {
-            ScopedModel.of<MainModel>(context).setGetItemsFromBarCode(true);
-            List<Item> itms = [];
-            barcodes.forEach((element) => itms.add(element.item));
-            ScopedModel.of<MainModel>(context).setItems(itms);
-            ScopedModel.of<MainModel>(context)
-                .setHomePagePopup(HomePagePopups.ItemFinder);
-            ScopedModel.of<MainModel>(context)
-                .itemFindeeFocusNode
-                .requestFocus();
-          }
-        }
-      });
-    } else {
-      ScopedModel.of<MainModel>(context).barCodeFocusNode.requestFocus();
-    }
-  }
-
   _onKeyPressHandler(RawKeyEvent key) {
     if (key.runtimeType.toString() == 'RawKeyDownEvent') {
       print(key.logicalKey.keyId);
@@ -310,12 +244,11 @@ class _SalesPageState extends State<SalesPage> {
         case 4295426106: //F1
           _itemFinderClick();
           break;
-          // case 4295426107: //F2
-
+        case 4295426107: //F2
+          _chargeFinderClick();
           break;
-        case 4295426108: //F3
-
-          break;
+        // case 4295426108: //F3
+        //   break;
         case 4295426109: //F4
           _finishOrderClick();
           break;
@@ -326,13 +259,18 @@ class _SalesPageState extends State<SalesPage> {
           _closePopup();
           break;
       }
-      // print(key.logicalKey.keyId);
     }
   }
 
   _itemFinderClick() {
     ScopedModel.of<MainModel>(context).setGetItemsFromBarCode(false);
     _showPopup(HomePagePopups.ItemFinder);
+    ScopedModel.of<MainModel>(context).itemFindeeFocusNode.requestFocus();
+  }
+
+  _chargeFinderClick() {
+    ScopedModel.of<MainModel>(context).setGetItemsFromBarCode(false);
+    _showPopup(HomePagePopups.ChargeFinder);
     ScopedModel.of<MainModel>(context).itemFindeeFocusNode.requestFocus();
   }
 
@@ -353,8 +291,6 @@ class _SalesPageState extends State<SalesPage> {
   _showPopup(HomePagePopups pop) {
     ScopedModel.of<MainModel>(context).setHomePagePopup(pop);
   }
-
-  _reFillNoteClick() {}
 
   _clearClick() {
     Messages.confirmMessage(

@@ -1,16 +1,16 @@
 class Item {
-  Item({
-    this.id,
-    this.name,
-    this.code,
-    this.category,
-    this.priceCategory,
-    this.buyPrice,
-    this.sellPrice,
-    this.currentQty,
-    this.reOrderQty,
-    this.isActive,
-  });
+  Item(
+      {this.id,
+      this.name,
+      this.code,
+      this.category,
+      this.priceCategory,
+      this.buyPrice,
+      this.sellPrice,
+      this.currentQty,
+      this.reOrderQty,
+      this.isActive,
+      this.isItem});
 
   int id;
   String name;
@@ -24,6 +24,7 @@ class Item {
   bool isActive;
   double totalPrice = 0;
   double sellQuantity = 1;
+  bool isItem = true;
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
         id: json["id"],
@@ -36,6 +37,7 @@ class Item {
         currentQty: json["currentQty"].toDouble(),
         reOrderQty: json["reOrderQty"].toDouble(),
         isActive: json["isActive"],
+        isItem: true,
       );
 
   Map<String, dynamic> toJson() => {
@@ -49,5 +51,6 @@ class Item {
         "currentQty": currentQty,
         "reOrderQty": reOrderQty,
         "isActive": isActive,
+        "isItem": isItem,
       };
 }

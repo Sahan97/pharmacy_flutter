@@ -20,18 +20,27 @@ class _SaleItemState extends State<SaleItem> {
   double price = 0;
   double quantity = 0;
   var focusNode = new FocusNode();
+  var itemPriceFocusNode = new FocusNode();
   final qtyController = TextEditingController();
 
   @override
   void initState() {
-    focusNode.requestFocus();
-    qtyController.text = '';
+    if (widget.item.isItem) {
+      focusNode.requestFocus();
+      qtyController.text = '';
+    } else {
+      qtyController.text = '1';
+      quantity = 1;
+      itemPriceFocusNode.requestFocus();
+    }
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     calPrice();
+
     return Card(
       child: Row(
         children: [
@@ -44,10 +53,12 @@ class _SaleItemState extends State<SaleItem> {
                 '${widget.item.name} ${widget.item.priceCategory.isEmpty ? '' : ' - (${widget.item.priceCategory})'}',
           ),
           _qty(),
-          PriceView(
-            price: widget.item.sellPrice,
-            color: Colors.blue,
-          ),
+          widget.item.isItem
+              ? PriceView(
+                  price: widget.item.sellPrice,
+                  color: Colors.blue,
+                )
+              : chargeItemPrice(),
           SizedBox(
             width: 14,
           ),
@@ -66,6 +77,43 @@ class _SaleItemState extends State<SaleItem> {
       price = newPrice;
     });
     ScopedModel.of<MainModel>(context).setTotalPrice(newPrice, widget.index);
+  }
+
+  Widget chargeItemPrice() {
+    return Container(
+      width: 80,
+      height: 50,
+      margin: EdgeInsets.only(right: 10, top: 5, bottom: 5),
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.blue, width: 3),
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.white),
+      child: TextFormField(
+        focusNode: itemPriceFocusNode,
+        inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+          disabledBorder: InputBorder.none,
+        ),
+        onChanged: (String value) async {
+          widget.item.sellPrice = double.parse(value);
+          calPrice();
+        },
+        onFieldSubmitted: (value) {
+          ScopedModel.of<MainModel>(context).barCodeFocusNode.requestFocus();
+        },
+        cursorColor: Colors.black,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.blue,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
   }
 
   Widget _remove() {
@@ -107,7 +155,8 @@ class _SaleItemState extends State<SaleItem> {
             quantity = 0;
             widget.item.sellQuantity = 0;
           } else {
-            if (widget.item.currentQty < double.parse(value)) {
+            if (widget.item.isItem &&
+                widget.item.currentQty < double.parse(value)) {
               await Messages.simpleMessage(
                   head: 'Failed!',
                   body:

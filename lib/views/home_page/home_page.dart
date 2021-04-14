@@ -1,6 +1,7 @@
 import 'package:communication/helpers/images.dart';
 import 'package:communication/scoped_model/main.dart';
 import 'package:communication/views/auth/change_password.dart';
+import 'package:communication/views/sales/charge_finder.dart';
 import 'package:communication/views/sales/finish_order.dart';
 import 'package:communication/views/sales/item_finder.dart';
 import 'package:communication/views/sales/sales_page.dart';
@@ -11,7 +12,13 @@ import 'package:scoped_model/scoped_model.dart';
 
 import 'home_page_drawer.dart';
 
-enum HomePagePopups { NoPopup, ChangePassword, ItemFinder, FinishOrder }
+enum HomePagePopups {
+  NoPopup,
+  ChangePassword,
+  ItemFinder,
+  FinishOrder,
+  ChargeFinder
+}
 
 class HomePage extends StatelessWidget {
   const HomePage({Key key}) : super(key: key);
@@ -56,6 +63,9 @@ class HomePage extends StatelessWidget {
         break;
       case HomePagePopups.ItemFinder:
         return ItemFinder();
+        break;
+      case HomePagePopups.ChargeFinder:
+        return ChargeFinder();
         break;
       case HomePagePopups.FinishOrder:
         return FinishOrder();
