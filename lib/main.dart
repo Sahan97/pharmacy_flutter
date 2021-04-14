@@ -2,6 +2,7 @@ import 'package:communication/helpers/shop_details.dart';
 import 'package:communication/scoped_model/main.dart';
 import 'package:communication/views/admin_sales_page/Admin_sales_page.dart';
 import 'package:communication/views/landing_page.dart';
+import 'package:communication/views/manage_other_charges/manage_other_charges.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'views/home_page/home_page.dart';
@@ -45,6 +46,12 @@ class MyApp extends StatelessWidget {
             case '/manageItems':
               return MaterialPageRoute(
                 builder: (context) => ManageItems(),
+              );
+              break;
+
+            case '/otherCharges':
+              return MaterialPageRoute(
+                builder: (context) => ManageOtherCharges(),
               );
               break;
             case '/adminSales':

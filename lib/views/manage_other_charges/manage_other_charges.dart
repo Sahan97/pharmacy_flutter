@@ -1,20 +1,18 @@
 import 'package:communication/helpers/images.dart';
 import 'package:communication/scoped_model/main.dart';
-import 'package:communication/views/manage_pharmacy_items/add_from_excel.dart';
-import 'package:communication/views/manage_pharmacy_items/add_item.dart';
-import 'package:communication/views/manage_pharmacy_items/all_items.dart';
-import 'package:communication/views/manage_pharmacy_items/edit_item.dart';
-import 'package:communication/views/manage_pharmacy_items/re_fill_item.dart';
+import 'package:communication/views/manage_other_charges/add_other_charge.dart';
+import 'package:communication/views/manage_other_charges/all_other_charges.dart';
+import 'package:communication/views/manage_other_charges/edit_other_charge.dart';
 import 'package:communication/widgets/Messages.dart';
 import 'package:communication/widgets/background_image.dart';
 import 'package:communication/widgets/custom_tab_view.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-enum ManageItemPopup { NoPopup, EditItem, ReFillItem }
+enum ManageOtherChargesPopup { NoPopup, UpdateCharge }
 
-class ManageItems extends StatelessWidget {
-  const ManageItems({Key key}) : super(key: key);
+class ManageOtherCharges extends StatelessWidget {
+  const ManageOtherCharges({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +24,11 @@ class ManageItems extends StatelessWidget {
           child: Stack(
             children: [
               CustomTabView(
-                title: 'Manage Pharmacy Items',
-                labels: ['All Items', 'Add New Item', 'Add From Excel'],
+                title: 'Manage Other Charges',
+                labels: ['All Charges', 'Add New Charge'],
                 tabs: [
-                  AllItems(),
-                  AddItem(),
-                  AddFromExcel(),
+                  AllOtherCharges(),
+                  AddOtherCharge(),
                 ],
               ),
               _buildPopup(model)
@@ -43,12 +40,9 @@ class ManageItems extends StatelessWidget {
   }
 
   Widget _buildPopup(MainModel model) {
-    switch (model.manageItemCurrentPopup) {
-      case ManageItemPopup.EditItem:
-        return EditItem();
-        break;
-      case ManageItemPopup.ReFillItem:
-        return ReFillItem();
+    switch (model.manageOtherChargesCurrentPopup) {
+      case ManageOtherChargesPopup.UpdateCharge:
+        return UpdateOtherCharge();
         break;
       default:
         return Container();

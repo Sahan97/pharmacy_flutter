@@ -75,11 +75,11 @@ class _SalesPageState extends State<SalesPage> {
                               text: 'Pharmacy Items (F1)',
                               color: Colors.green,
                             ),
-                            LoadingBtn(
-                              onPressed: _itemFinderClick,
-                              text: 'Stationary Items (F2)',
-                              color: Colors.green,
-                            ),
+                            // LoadingBtn(
+                            //   onPressed: _itemFinderClick,
+                            //   text: 'Stationary Items (F2)',
+                            //   color: Colors.green,
+                            // ),
                             LoadingBtn(
                               onPressed: _itemFinderClick,
                               text: 'Other Charges (F3)',
@@ -171,7 +171,7 @@ class _SalesPageState extends State<SalesPage> {
                     Colors.black,
                     al: Alignment.centerLeft,
                   ),
-                  _barcodeField()
+                  // _barcodeField()
                 ],
               ),
             ),
@@ -310,7 +310,7 @@ class _SalesPageState extends State<SalesPage> {
         case 4295426106: //F1
           _itemFinderClick();
           break;
-        case 4295426107: //F2
+          // case 4295426107: //F2
 
           break;
         case 4295426108: //F3
@@ -340,14 +340,14 @@ class _SalesPageState extends State<SalesPage> {
     if (ScopedModel.of<MainModel>(context).billedItems.length == 0) {
       return;
     }
+    _showPopup(HomePagePopups.FinishOrder);
+    // Messages.confirmMessage(
+    //     head: 'Are you sure?',
+    //     body: "This action will finish the order",
+    //     onConfirm: () {
 
-    Messages.confirmMessage(
-        head: 'Are you sure?',
-        body: "This action will finish the order",
-        onConfirm: () {
-          _showPopup(HomePagePopups.FinishOrder);
-        },
-        onCancell: () {});
+    //     },
+    //     onCancell: () {});
   }
 
   _showPopup(HomePagePopups pop) {

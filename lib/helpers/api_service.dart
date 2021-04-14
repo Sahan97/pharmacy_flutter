@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:communication/helpers/shop_details.dart';
 import 'package:communication/model/common_response.dart';
 import 'package:communication/model/item.dart';
+import 'package:communication/model/other_charge.dart';
 import 'package:communication/model/user.dart';
 import 'package:communication/widgets/Messages.dart';
 import 'package:cross_connectivity/cross_connectivity.dart';
@@ -180,6 +183,15 @@ class ApiService {
     return response;
   }
 
+  Future<CommonResponse> addItemsFromExcel(File file) async {
+    var formData =
+        FormData.fromMap({'file': await MultipartFile.fromFile(file.path)});
+    CommonResponse response = await _performRequest(
+        '/lg/item/addItemsFromExcel', RequestType.post,
+        body: formData);
+    return response;
+  }
+
   Future<List<Item>> getItemsCall() async {
     CommonResponse response =
         await _performRequest('/lg/item/getAll', RequestType.get);
@@ -188,6 +200,39 @@ class ApiService {
         (item) => Item.fromJson(item),
       ),
     );
+  }
+
+  Future<CommonResponse> createOtherCharge(dynamic data) async {
+    CommonResponse response = await _performRequest(
+        '/lg/other_charge/create', RequestType.post,
+        body: data);
+    return response;
+  }
+
+  Future<CommonResponse> updateOtherChargeCall(dynamic data) async {
+    CommonResponse response = await _performRequest(
+        '/lg/other_charge/update', RequestType.post,
+        body: data);
+    return response;
+  }
+
+  Future<List<OtherCharge>> getOtherCharges() async {
+    CommonResponse response =
+        await _performRequest('/lg/other_charge/get', RequestType.get);
+    return List<OtherCharge>.from(
+      response.data.map(
+        (item) => OtherCharge.fromJson(item),
+      ),
+    );
+  }
+
+  Future<CommonResponse> deleteOtherCharge(int id) async {
+    print(id);
+    CommonResponse response = await _performRequest(
+      '/lg/other_charge/delete/$id',
+      RequestType.get,
+    );
+    return response;
   }
 
   Future<List<Item>> getActiveItemsCall() async {

@@ -15,7 +15,7 @@ class EditItem extends StatefulWidget {
   _EditItemState createState() => _EditItemState();
 }
 
-final priceCategories = ["ONE", "BOTTLE", "TUBE", "ML"];
+final priceCategories = ["ONE", "BOTTLE", "TUBE", "1 ML"];
 
 class _EditItemState extends State<EditItem> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();

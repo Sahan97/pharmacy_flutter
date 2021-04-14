@@ -249,7 +249,7 @@ class CodeView extends StatelessWidget {
         child: Text(
           code,
           style: TextStyle(
-              color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 20),
+              color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 13),
         ),
       ),
     );

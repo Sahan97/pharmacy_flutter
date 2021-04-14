@@ -17,6 +17,7 @@ dependencies:
   flutter_chip_tags: ^1.0.3
   intl: ^0.16.1
   process_run: ^0.10.12+3
+  filepicker_windows: ^2.0.0
 
 dev_dependencies:
   flutter_test:

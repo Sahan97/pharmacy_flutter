@@ -62,6 +62,10 @@ class HomeDrawer extends StatelessWidget {
                                 title: 'Manage Pharmacy Items',
                                 route: '/manageItems'),
                             DrawerItem(
+                                icon: Icons.room_service,
+                                title: 'Manage Other Charges',
+                                route: '/otherCharges'),
+                            DrawerItem(
                                 icon: Icons.store,
                                 title: 'Sales',
                                 route: '/adminSales')

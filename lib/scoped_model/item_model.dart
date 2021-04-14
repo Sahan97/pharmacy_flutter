@@ -1,9 +1,12 @@
 import 'package:communication/model/item.dart';
+import 'package:communication/model/other_charge.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 mixin ItemScopedModel on Model {
   List<Item> items = [];
+  List<OtherCharge> otherCharges = [];
   int editItemIndex;
+  int editOtherChargeIndex;
   bool getItemsFromBarCode = false;
 
   setEditItem(int index) {
@@ -11,8 +14,18 @@ mixin ItemScopedModel on Model {
     notifyListeners();
   }
 
+  setEditOtherCharge(int index) {
+    editOtherChargeIndex = index;
+    notifyListeners();
+  }
+
   setItems(List<Item> it) {
     items = it;
+    notifyListeners();
+  }
+
+  setOtherCharges(List<OtherCharge> it) {
+    otherCharges = it;
     notifyListeners();
   }
 
