@@ -1,1 +1,1 @@
-String shopName = "Pharmacy (PVT) LTD";
+String shopName = "MEDWINGS MEDICAL CENTER (PVT) LTD";

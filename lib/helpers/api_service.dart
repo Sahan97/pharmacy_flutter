@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:communication/helpers/shop_details.dart';
 import 'package:communication/model/common_response.dart';
 import 'package:communication/model/item.dart';
