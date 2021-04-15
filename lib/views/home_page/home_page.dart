@@ -8,6 +8,7 @@ import 'package:communication/views/sales/sales_page.dart';
 import 'package:communication/widgets/Messages.dart';
 import 'package:communication/widgets/my_app_bar.dart';
 import 'package:communication/widgets/background_image.dart';
+import 'package:communication/widgets/calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -18,7 +19,8 @@ enum HomePagePopups {
   ChangePassword,
   ItemFinder,
   FinishOrder,
-  ChargeFinder
+  ChargeFinder,
+  Calculator
 }
 
 class HomePage extends StatelessWidget {
@@ -61,6 +63,9 @@ class HomePage extends StatelessWidget {
         break;
       case HomePagePopups.FinishOrder:
         return FinishOrder();
+        break;
+      case HomePagePopups.Calculator:
+        return MyCalculator();
         break;
       default:
         return Container();

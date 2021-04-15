@@ -1,7 +1,4 @@
-import 'package:communication/helpers/api_service.dart';
 import 'package:communication/helpers/shop_details.dart';
-import 'package:communication/model/bar_code.dart';
-import 'package:communication/model/item.dart';
 import 'package:communication/scoped_model/main.dart';
 import 'package:communication/views/home_page/home_page.dart';
 import 'package:communication/views/manage_pharmacy_items/all_items.dart';
@@ -9,6 +6,7 @@ import 'package:communication/widgets/Messages.dart';
 import 'package:communication/widgets/loading_btn.dart';
 import 'package:communication/widgets/sale_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_simple_calculator/flutter_simple_calculator.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -75,33 +73,28 @@ class _SalesPageState extends State<SalesPage> {
                               text: 'Pharmacy Items (F1)',
                               color: Colors.green,
                             ),
-                            // LoadingBtn(
-                            //   onPressed: _itemFinderClick,
-                            //   text: 'Stationary Items (F2)',
-                            //   color: Colors.green,
-                            // ),
                             LoadingBtn(
                               onPressed: _chargeFinderClick,
                               text: 'Other Charges (F2)',
                               color: Colors.green,
                             ),
-
                             Spacer(),
-                            // LoadingBtn(
-                            //   onPressed: _reFillNoteClick,
-                            //   text: 'Re-Fill Note (F3)',
-                            //   color: Colors.blue,
-                            // ),
                             LoadingBtn(
                               onPressed: _finishOrderClick,
-                              text: 'Finish Order (F4)',
+                              text: 'Finish Order (F3)',
                               color: Colors.orange,
                             ),
                             LoadingBtn(
                               onPressed: _clearClick,
-                              text: 'Clear (F5)',
+                              text: 'Clear (F4)',
                               color: Colors.red,
-                            )
+                            ),
+                            Spacer(),
+                            LoadingBtn(
+                              onPressed: _showCalculator,
+                              text: 'Calculator (F5)',
+                              color: Colors.blue,
+                            ),
                           ],
                         ),
                       ),
@@ -247,13 +240,14 @@ class _SalesPageState extends State<SalesPage> {
         case 4295426107: //F2
           _chargeFinderClick();
           break;
-        // case 4295426108: //F3
-        //   break;
-        case 4295426109: //F4
+        case 4295426108: //F3
           _finishOrderClick();
           break;
-        case 4295426110: //F5
+        case 4295426109: //F4
           _clearClick();
+          break;
+        case 4295426110: //F5
+          _showCalculator();
           break;
         case 4295426089:
           _closePopup();
@@ -286,6 +280,10 @@ class _SalesPageState extends State<SalesPage> {
 
     //     },
     //     onCancell: () {});
+  }
+
+  _showCalculator() {
+    _showPopup(HomePagePopups.Calculator);
   }
 
   _showPopup(HomePagePopups pop) {
