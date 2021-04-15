@@ -120,36 +120,45 @@ class _ItemViewState extends State<ItemView> {
             },
             padding: EdgeInsets.all(0),
           ),
-          FloatingActionButton(
-            key: Key('refill btn'),
-            onPressed: !widget.item.isActive ? null : _onReFill,
-            child: Icon(
-              Icons.settings_backup_restore,
-              color: Colors.blue,
+          Tooltip(
+            message: 'Re-Fill',
+            child: FloatingActionButton(
+              key: Key('refill btn'),
+              onPressed: !widget.item.isActive ? null : _onReFill,
+              child: Icon(
+                Icons.settings_backup_restore,
+                color: Colors.blue,
+              ),
+              backgroundColor: !widget.item.isActive
+                  ? Colors.grey.withOpacity(0.5)
+                  : Colors.white,
             ),
-            backgroundColor: !widget.item.isActive
-                ? Colors.grey.withOpacity(0.5)
-                : Colors.white,
           ),
-          FloatingActionButton(
-            key: Key('edit btn'),
-            onPressed: !widget.item.isActive ? null : _onEdit,
-            child: Icon(
-              Icons.edit,
-              color: Colors.green,
+          Tooltip(
+            message: 'Edit',
+            child: FloatingActionButton(
+              key: Key('edit btn'),
+              onPressed: !widget.item.isActive ? null : _onEdit,
+              child: Icon(
+                Icons.edit,
+                color: Colors.green,
+              ),
+              backgroundColor: !widget.item.isActive
+                  ? Colors.grey.withOpacity(0.5)
+                  : Colors.white,
             ),
-            backgroundColor: !widget.item.isActive
-                ? Colors.grey.withOpacity(0.5)
-                : Colors.white,
           ),
-          FloatingActionButton(
-            key: Key('delete btn'),
-            onPressed: _onDelete,
-            child: Icon(
-              !widget.item.isActive ? Icons.restore_from_trash : Icons.delete,
-              color: !widget.item.isActive ? Colors.green : Colors.red,
+          Tooltip(
+            message: !widget.item.isActive ? 'Activate' : 'Deactivate',
+            child: FloatingActionButton(
+              key: Key('delete btn'),
+              onPressed: _onDelete,
+              child: Icon(
+                !widget.item.isActive ? Icons.restore_from_trash : Icons.delete,
+                color: !widget.item.isActive ? Colors.green : Colors.red,
+              ),
+              backgroundColor: Colors.white,
             ),
-            backgroundColor: Colors.white,
           )
         ],
       ),

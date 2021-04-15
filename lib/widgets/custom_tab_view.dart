@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'loading_btn.dart';
+import 'window_buttons.dart';
 
 class CustomTabView extends StatefulWidget {
   final String title;
@@ -38,6 +39,10 @@ class _CustomTabViewState extends State<CustomTabView> {
         Align(
           child: _backBtn(),
           alignment: Alignment.topLeft,
+        ),
+        Align(
+          alignment: Alignment.topRight,
+          child: WindowButtons(),
         )
       ],
     );
@@ -99,7 +104,7 @@ class _CustomTabViewState extends State<CustomTabView> {
                 child: ScaleAnimatedWidget(
                     enabled: animation,
                     duration: Duration(milliseconds: 500),
-                    values: [1,0,1.01,1],
+                    values: [1, 0, 1.01, 1],
                     child: widget.tabs[selectedTab]),
               ),
             )
@@ -135,11 +140,10 @@ class _CustomTabViewState extends State<CustomTabView> {
     setState(() {
       selectedTab = tab;
       animation = false;
-      Future.delayed(Duration(milliseconds: 100),(){
+      Future.delayed(Duration(milliseconds: 100), () {
         setState(() {
           animation = true;
         });
-        
       });
     });
   }
