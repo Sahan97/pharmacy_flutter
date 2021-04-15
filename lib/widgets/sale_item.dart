@@ -161,6 +161,7 @@ class _SaleItemState extends State<SaleItem> {
                   head: 'Failed!',
                   body:
                       'This quantity is not available. Only ${widget.item.currentQty} items are available!');
+
               qtyController.text = "0";
               quantity = 0;
               widget.item.sellQuantity = quantity;

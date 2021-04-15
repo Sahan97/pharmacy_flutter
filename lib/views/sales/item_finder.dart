@@ -113,7 +113,6 @@ class _ItemFinderState extends State<ItemFinder> {
           head: "Item already added!",
           body: 'Same item cannot add more than one time.');
     }
-
     _onClose();
   }
 

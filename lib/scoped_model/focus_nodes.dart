@@ -5,6 +5,7 @@ mixin FocusNodes on Model {
   FocusNode salesFocusNode = FocusNode();
   FocusNode itemFindeeFocusNode = FocusNode();
   FocusNode barCodeFocusNode = FocusNode();
+  FocusNode messageFocusNode = FocusNode();
 
   focusSalesPage() {
     salesFocusNode.requestFocus();
@@ -16,5 +17,9 @@ mixin FocusNodes on Model {
 
   focusBarcodeField() {
     barCodeFocusNode.requestFocus();
+  }
+
+  focusMessage() {
+    messageFocusNode.requestFocus();
   }
 }

@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'package:communication/scoped_model/main.dart';
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class Messages {
   static BuildContext context;
@@ -18,7 +20,8 @@ class Messages {
             title: Text(head),
             content: Text(body),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
+                focusNode: ScopedModel.of<MainModel>(context).messageFocusNode,
                 child: Text(
                   'ok',
                   style: TextStyle(color: Colors.green),
@@ -28,6 +31,7 @@ class Messages {
                     onPress();
                   }
                   Navigator.pop(context);
+                  ScopedModel.of<MainModel>(context).focusSalesPage();
                 },
               )
             ],
@@ -44,7 +48,8 @@ class Messages {
             title: Text('Something went wrong!'),
             content: Text('Please try again later!'),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
+                focusNode: ScopedModel.of<MainModel>(context).messageFocusNode,
                 child: Text(
                   'ok',
                   style: TextStyle(color: Colors.green),
@@ -68,7 +73,7 @@ class Messages {
             content:
                 Text('Please check your internet connection and try again.'),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text(
                   'exit',
                   style: TextStyle(color: Colors.red),
@@ -77,7 +82,7 @@ class Messages {
                   exit(0);
                 },
               ),
-              FlatButton(
+              TextButton(
                 child: Text(
                   'try again',
                   style: TextStyle(color: Colors.green),
@@ -104,7 +109,7 @@ class Messages {
             title: Text(head),
             content: Text(body),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text(
                   'cancel',
                   style: TextStyle(color: Colors.red),
@@ -114,7 +119,8 @@ class Messages {
                   Navigator.pop(context);
                 },
               ),
-              FlatButton(
+              TextButton(
+                focusNode: ScopedModel.of<MainModel>(context).messageFocusNode,
                 child: Text(
                   'confirm',
                   style: TextStyle(color: Colors.green),
@@ -122,6 +128,7 @@ class Messages {
                 onPressed: () {
                   onConfirm();
                   Navigator.pop(context);
+                  ScopedModel.of<MainModel>(context).focusSalesPage();
                 },
               ),
             ],

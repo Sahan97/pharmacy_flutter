@@ -39,7 +39,9 @@ class _ItemViewState extends State<ItemView> {
           InkWell(
             onTap: widget.isCashier
                 ? () {
-                    if (widget.item.currentQty > 0) {
+                    if (widget.item.currentQty > 0 &&
+                        widget.item.sellPrice != null &&
+                        widget.item.sellPrice > 0) {
                       widget.onPressed(widget.item);
                     }
                   }
