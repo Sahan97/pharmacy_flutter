@@ -6,7 +6,6 @@ import 'package:communication/views/sales/finish_order.dart';
 import 'package:communication/views/sales/item_finder.dart';
 import 'package:communication/views/sales/sales_page.dart';
 import 'package:communication/widgets/Messages.dart';
-import 'package:communication/widgets/my_app_bar.dart';
 import 'package:communication/widgets/background_image.dart';
 import 'package:communication/widgets/calculator.dart';
 import 'package:flutter/material.dart';
@@ -31,18 +30,37 @@ class HomePage extends StatelessWidget {
     return _buildBody(context);
   }
 
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
   Widget _buildBody(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
       builder: (context, child, model) => Scaffold(
-        appBar: MyAppBar(
-          appBar: AppBar(),
-          title: 'Hello, ${model.user != null ? model.user.name : ''}',
-        ),
+        key: scaffoldKey,
         drawer: HomeDrawer(),
         body: BackgroundImage(
           image: image3,
           child: Stack(
-            children: [SalesPage(), _buildPopup(context)],
+            children: [
+              SalesPage(),
+              _buildPopup(context),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FloatingActionButton(
+                    backgroundColor: Colors.grey.withOpacity(0.5),
+                    key: Key('drawer button'),
+                    child: Icon(
+                      Icons.menu,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      scaffoldKey.currentState.openDrawer();
+                    },
+                  ),
+                ),
+              )
+            ],
           ),
         ),
       ),

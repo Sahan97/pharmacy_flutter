@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'loading_btn.dart';
-import 'window_buttons.dart';
 
 class CustomTabView extends StatefulWidget {
   final String title;
@@ -40,10 +39,6 @@ class _CustomTabViewState extends State<CustomTabView> {
           child: _backBtn(),
           alignment: Alignment.topLeft,
         ),
-        Align(
-          alignment: Alignment.topRight,
-          child: WindowButtons(),
-        )
       ],
     );
   }

@@ -4,7 +4,6 @@ import 'package:communication/helpers/api_service.dart';
 import 'package:communication/helpers/images.dart';
 import 'package:communication/helpers/shop_details.dart';
 import 'package:communication/widgets/Messages.dart';
-import 'package:communication/widgets/my_app_bar.dart';
 import 'package:communication/widgets/background_image.dart';
 import 'package:flutter/material.dart';
 import 'auth/login.dart';
@@ -55,16 +54,16 @@ class _LandingPageState extends State<LandingPage> {
                     onClosed: _hideLoginView,
                   )
                 : Container(),
-            Positioned(
-              child: Container(
-                height: 50,
-                child: MyAppBar(
-                  backgroundColor: Colors.transparent,
-                  appBar: AppBar(),
-                  title: '',
-                ),
-              ),
-            ),
+            // Positioned(
+            //   child: Container(
+            //     height: 50,
+            //     child: MyAppBar(
+            //       backgroundColor: Colors.transparent,
+            //       appBar: AppBar(),
+            //       title: '',
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),
