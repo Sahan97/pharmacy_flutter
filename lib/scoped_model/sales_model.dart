@@ -1,4 +1,3 @@
-import 'package:communication/model/item.dart';
 import 'package:communication/model/sale.dart';
 import 'package:scoped_model/scoped_model.dart';
 

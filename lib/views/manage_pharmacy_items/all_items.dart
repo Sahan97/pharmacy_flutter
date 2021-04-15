@@ -126,8 +126,10 @@ class _AllItemsState extends State<AllItems> {
                 ),
               ),
             ),
-            RaisedButton(
-              color: Colors.blue,
+            TextButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.blue),
+              ),
               onPressed: () {
                 _formKey.currentState.reset();
                 ScopedModel.of<MainModel>(context).setItems(allItems);

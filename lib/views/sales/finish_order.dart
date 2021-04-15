@@ -50,7 +50,9 @@ class _FinishOrderState extends State<FinishOrder> {
                 _priceItem(
                     text: 'Balance',
                     price: received - finalPrice,
-                    color: Colors.orange),
+                    color: (received - finalPrice) < 0
+                        ? Colors.red
+                        : Colors.orange),
                 ButtonBar(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -139,7 +141,7 @@ class _FinishOrderState extends State<FinishOrder> {
                 });
               },
               inputFormatters: <TextInputFormatter>[
-                WhitelistingTextInputFormatter.digitsOnly
+                FilteringTextInputFormatter.digitsOnly
               ],
               onSubmitted: (value) {
                 _finishOrder();

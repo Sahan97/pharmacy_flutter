@@ -291,7 +291,7 @@ class _AllSalesState extends State<AllSales> {
             SizedBox(
               width: 100,
             ),
-            RaisedButton(
+            TextButton(
               onPressed: () {
                 idController.text = '';
                 dateController.text = '';
@@ -304,7 +304,9 @@ class _AllSalesState extends State<AllSales> {
                     fontSize: 15,
                     fontWeight: FontWeight.bold),
               ),
-              color: Colors.green,
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.green),
+              ),
             )
           ],
         ),

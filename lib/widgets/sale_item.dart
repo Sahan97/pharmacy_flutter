@@ -90,7 +90,7 @@ class _SaleItemState extends State<SaleItem> {
           color: Colors.white),
       child: TextFormField(
         focusNode: itemPriceFocusNode,
-        inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         decoration: InputDecoration(
           border: InputBorder.none,
           focusedBorder: InputBorder.none,
@@ -142,7 +142,7 @@ class _SaleItemState extends State<SaleItem> {
       child: TextFormField(
         controller: qtyController,
         focusNode: focusNode,
-        inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         decoration: InputDecoration(
           border: InputBorder.none,
           focusedBorder: InputBorder.none,

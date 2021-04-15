@@ -4,7 +4,6 @@ import 'package:communication/views/admin_sales_page/Admin_sales_page.dart';
 import 'package:communication/widgets/blackout.dart';
 import 'package:communication/widgets/loading_btn.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class AdminSaleView extends StatelessWidget {

@@ -167,8 +167,10 @@ class LoginBtn extends StatelessWidget {
         margin: EdgeInsets.only(top: 20),
         width: 300,
         height: 50,
-        child: RaisedButton(
-          color: color,
+        child: TextButton(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(color),
+          ),
           onPressed: onPressed,
           child: Text(
             text,

@@ -169,8 +169,10 @@ class _ChargeFinderState extends State<ChargeFinder> {
                 ),
               ),
             ),
-            RaisedButton(
-              color: Colors.blue,
+            TextButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.blue),
+              ),
               onPressed: () {
                 _formKey.currentState.reset();
                 setState(() {
@@ -187,8 +189,10 @@ class _ChargeFinderState extends State<ChargeFinder> {
             SizedBox(
               width: 10,
             ),
-            RaisedButton(
-              color: Colors.blue,
+            TextButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.blue),
+              ),
               onPressed: () {
                 _formKey.currentState.reset();
                 _loadAllItems();

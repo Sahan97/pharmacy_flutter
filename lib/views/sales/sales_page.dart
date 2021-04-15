@@ -6,7 +6,6 @@ import 'package:communication/widgets/Messages.dart';
 import 'package:communication/widgets/loading_btn.dart';
 import 'package:communication/widgets/sale_item.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_simple_calculator/flutter_simple_calculator.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:scoped_model/scoped_model.dart';
 

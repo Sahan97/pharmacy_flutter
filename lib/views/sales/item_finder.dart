@@ -169,8 +169,10 @@ class _ItemFinderState extends State<ItemFinder> {
                 ),
               ),
             ),
-            RaisedButton(
-              color: Colors.blue,
+            TextButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.blue),
+              ),
               onPressed: () {
                 _formKey.currentState.reset();
                 setState(() {
@@ -186,8 +188,10 @@ class _ItemFinderState extends State<ItemFinder> {
             SizedBox(
               width: 10,
             ),
-            RaisedButton(
-              color: Colors.blue,
+            TextButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.blue),
+              ),
               onPressed: () {
                 _formKey.currentState.reset();
                 _loadAllItems();
