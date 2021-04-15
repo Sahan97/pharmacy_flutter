@@ -239,7 +239,7 @@ class _SalesPageState extends State<SalesPage> {
 
   _onKeyPressHandler(RawKeyEvent key) {
     if (key.runtimeType.toString() == 'RawKeyDownEvent') {
-      print(key.logicalKey.keyId);
+      // print(key.logicalKey.keyId);
       switch (key.logicalKey.keyId) {
         case 4295426106: //F1
           _itemFinderClick();
