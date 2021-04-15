@@ -202,6 +202,16 @@ class ApiService {
     );
   }
 
+  Future<List<Item>> getReOrderListCall() async {
+    CommonResponse response =
+        await _performRequest('/lg/item/get_re_order_list', RequestType.get);
+    return List<Item>.from(
+      response.data.map(
+        (item) => Item.fromJson(item),
+      ),
+    );
+  }
+
   Future<CommonResponse> createOtherCharge(dynamic data) async {
     CommonResponse response = await _performRequest(
         '/lg/other_charge/create', RequestType.post,

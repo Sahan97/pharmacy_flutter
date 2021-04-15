@@ -10,6 +10,7 @@ import 'package:communication/widgets/background_image.dart';
 import 'package:communication/widgets/custom_tab_view.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:communication/views/manage_pharmacy_items/re_order_list.dart';
 
 enum ManageItemPopup { NoPopup, EditItem, ReFillItem }
 
@@ -27,12 +28,13 @@ class ManageItems extends StatelessWidget {
             children: [
               CustomTabView(
                 title: 'Manage Pharmacy Items',
-                labels: ['All Items', 'Add New Item', 'Add From Excel'],
-                tabs: [
-                  AllItems(),
-                  AddItem(),
-                  AddFromExcel(),
+                labels: [
+                  'All Items',
+                  'Add New Item',
+                  'Add From Excel',
+                  'Re Order List'
                 ],
+                tabs: [AllItems(), AddItem(), AddFromExcel(), ReOrderList()],
               ),
               _buildPopup(model)
             ],
