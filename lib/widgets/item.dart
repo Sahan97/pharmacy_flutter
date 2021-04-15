@@ -43,7 +43,11 @@ class _ItemViewState extends State<ItemView> {
                       widget.onPressed(widget.item);
                     }
                   }
-                : null,
+                : () {
+                    setState(() {
+                      _isSideBarActive = false;
+                    });
+                  },
             child: Row(
               children: [
                 SizedBox(
@@ -124,28 +128,24 @@ class _ItemViewState extends State<ItemView> {
             message: 'Re-Fill',
             child: FloatingActionButton(
               key: Key('refill btn'),
-              onPressed: !widget.item.isActive ? null : _onReFill,
+              onPressed: _onReFill,
               child: Icon(
                 Icons.settings_backup_restore,
                 color: Colors.blue,
               ),
-              backgroundColor: !widget.item.isActive
-                  ? Colors.grey.withOpacity(0.5)
-                  : Colors.white,
+              backgroundColor: Colors.white,
             ),
           ),
           Tooltip(
             message: 'Edit',
             child: FloatingActionButton(
               key: Key('edit btn'),
-              onPressed: !widget.item.isActive ? null : _onEdit,
+              onPressed: _onEdit,
               child: Icon(
                 Icons.edit,
                 color: Colors.green,
               ),
-              backgroundColor: !widget.item.isActive
-                  ? Colors.grey.withOpacity(0.5)
-                  : Colors.white,
+              backgroundColor: Colors.white,
             ),
           ),
           Tooltip(

@@ -13,6 +13,7 @@ class InputField extends StatelessWidget {
   final String initialValue;
   final bool isDisable;
   final TextEditingController controller;
+  final Function onSubmit;
   const InputField(
       {Key key,
       @required this.icon,
@@ -25,7 +26,8 @@ class InputField extends StatelessWidget {
       this.isNumberOnly = false,
       this.initialValue = '',
       this.isDisable = false,
-      this.controller})
+      this.controller,
+      this.onSubmit})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -47,6 +49,11 @@ class InputField extends StatelessWidget {
         initialValue: controller != null ? null : initialValue,
         style: TextStyle(fontSize: 25),
         controller: controller,
+        onFieldSubmitted: (value) {
+          if (onSubmit != null) {
+            onSubmit();
+          }
+        },
       ),
     );
   }

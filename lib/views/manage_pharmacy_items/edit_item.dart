@@ -197,7 +197,7 @@ class _EditItemState extends State<EditItem> {
         _isBusy = false;
       });
       if (value.success) {
-        model.items[model.editItemIndex] = itemToSend;
+        model.updateItem(model.editItemIndex, Item.fromJson(value.data));
         model.setManageItemPopup(ManageItemPopup.NoPopup);
       }
       Messages.simpleMessage(head: value.title, body: value.subtitle);

@@ -61,6 +61,7 @@ class _LoginState extends State<Login> {
                           onSaved: _userNameSave,
                           onValidate: _userNameValidator,
                           autofocus: true,
+                          onSubmit: _onLogin,
                         ),
                         InputField(
                           icon: Icons.security,
@@ -68,6 +69,7 @@ class _LoginState extends State<Login> {
                           isObsecure: true,
                           onSaved: _passwordSave,
                           onValidate: _passwordValidator,
+                          onSubmit: _onLogin,
                         ),
                         LoadingBtn(
                           onPressed: _onLogin,

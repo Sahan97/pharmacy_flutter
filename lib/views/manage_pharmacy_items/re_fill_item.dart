@@ -4,7 +4,6 @@ import 'package:communication/scoped_model/main.dart';
 import 'package:communication/views/manage_pharmacy_items/manage_items.dart';
 import 'package:communication/widgets/Messages.dart';
 import 'package:communication/widgets/blackout.dart';
-import 'package:communication/widgets/chip_input.dart';
 import 'package:communication/widgets/input_field.dart';
 import 'package:communication/widgets/loading_btn.dart';
 import 'package:flutter/material.dart';
@@ -186,9 +185,7 @@ class _ReFillItemState extends State<ReFillItem> {
         _isBusy = false;
       });
       if (value.success) {
-        itemToSend.currentQty =
-            double.parse(value.data['currentQty'].toString());
-        model.items[model.editItemIndex] = itemToSend;
+        model.updateItem(model.editItemIndex, Item.fromJson(value.data));
         model.setManageItemPopup(ManageItemPopup.NoPopup);
       }
 

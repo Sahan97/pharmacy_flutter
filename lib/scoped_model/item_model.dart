@@ -14,6 +14,11 @@ mixin ItemScopedModel on Model {
     notifyListeners();
   }
 
+  updateItem(int index, Item item) {
+    items[index] = item;
+    notifyListeners();
+  }
+
   setEditOtherCharge(int index) {
     editOtherChargeIndex = index;
     notifyListeners();
