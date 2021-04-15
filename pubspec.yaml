@@ -18,6 +18,8 @@ dependencies:
   intl: ^0.16.1
   process_run: ^0.10.12+3
   filepicker_windows: ^2.0.0
+  fullscreen: ^1.0.3
+  bitsdojo_window: ^0.0.9
 
 dev_dependencies:
   flutter_test:
