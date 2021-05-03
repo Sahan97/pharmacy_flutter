@@ -36,8 +36,8 @@ class InputField extends StatelessWidget {
       width: width,
       child: TextFormField(
         enabled: !isDisable,
-        inputFormatters:
-            isNumberOnly ? [FilteringTextInputFormatter.digitsOnly] : [],
+        // inputFormatters:
+        //     isNumberOnly ? [FilteringTextInputFormatter.digitsOnly] : [],
         autofocus: autofocus,
         decoration: InputDecoration(
             labelText: labelText,
