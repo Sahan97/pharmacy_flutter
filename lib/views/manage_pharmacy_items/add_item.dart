@@ -23,8 +23,9 @@ class _AddItemState extends State<AddItem> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.9),
-          borderRadius: BorderRadius.circular(5)),
+        color: Colors.white.withOpacity(0.9),
+        borderRadius: BorderRadius.circular(5),
+      ),
       padding: EdgeInsets.all(20),
       child: Form(
         key: _formKey,

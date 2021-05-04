@@ -39,12 +39,17 @@ class _ReFillItemState extends State<ReFillItem> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       InputField(
-                        isDisable: true,
+                        isDisable: false,
                         initialValue: itemToSend.name,
                         icon: Icons.person,
                         labelText: 'Item name',
-                        onSaved: (String value) {},
+                        onSaved: (String value) {
+                          itemToSend.name = value;
+                        },
                         onValidate: (String value) {
+                          if (value.isEmpty) {
+                            return 'Please enter name';
+                          }
                           return null;
                         },
                         width: 500,
@@ -174,6 +179,7 @@ class _ReFillItemState extends State<ReFillItem> {
       _isBusy = true;
     });
     ApiService.shared.reFillItemCall({
+      "name": itemToSend.name,
       "itemId": itemToSend.id,
       "priceCategory": itemToSend.priceCategory,
       "buyPrice": itemToSend.buyPrice,
