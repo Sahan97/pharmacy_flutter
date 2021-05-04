@@ -73,22 +73,23 @@ class Messages {
             content:
                 Text('Please check your internet connection and try again.'),
             actions: <Widget>[
-              TextButton(
-                child: Text(
-                  'exit',
-                  style: TextStyle(color: Colors.red),
-                ),
-                onPressed: () {
-                  exit(0);
-                },
-              ),
+              // TextButton(
+              //   child: Text(
+              //     'exit',
+              //     style: TextStyle(color: Colors.red),
+              //   ),
+              //   onPressed: () {
+              //     exit(0);
+              //   },
+              // ),
               TextButton(
                 child: Text(
                   'try again',
                   style: TextStyle(color: Colors.green),
                 ),
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/login');
+                  Navigator.pop(context);
+                  // Navigator.pushReplacementNamed(context, '/login');
                 },
               )
             ],
