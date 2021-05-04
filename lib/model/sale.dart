@@ -131,7 +131,7 @@ class Item {
   String code;
   String category;
   String priceCategory;
-  int buyPrice;
+  double buyPrice;
   int sellPrice;
   int currentQty;
   int reOrderQty;
@@ -144,7 +144,7 @@ class Item {
         code: json["code"],
         category: json["category"],
         priceCategory: json["priceCategory"],
-        buyPrice: json["buyPrice"].toInt(),
+        buyPrice: json["buyPrice"].toDouble(),
         sellPrice: json["sellPrice"],
         currentQty: json["currentQty"],
         reOrderQty: json["reOrderQty"],
