@@ -307,12 +307,13 @@ class ApiService {
     return response;
   }
 
-  Future printBill(saleId, customer, items) async {
+  Future printBill(saleId, customer, items, cash) async {
     final response = await _printReceipt('/print', RequestType.post, body: {
       "shopName": shopName,
       "saleId": saleId,
       "customer": customer,
-      "items": items
+      "items": items,
+      "cash": cash
     });
     return response;
   }

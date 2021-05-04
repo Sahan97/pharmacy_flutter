@@ -248,8 +248,8 @@ class _FinishOrderState extends State<FinishOrder> {
       if (value.success) {
         _showPopup(HomePagePopups.NoPopup);
         ScopedModel.of<MainModel>(context).clearBill();
-        ApiService.shared
-            .printBill(value.data['id'], value.data['customer'], forPrint);
+        ApiService.shared.printBill(value.data['id'], value.data['customer'],
+            forPrint, received.toString());
         ScopedModel.of<MainModel>(context).barCodeFocusNode.requestFocus();
       } else {
         Messages.simpleMessage(
