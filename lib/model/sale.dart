@@ -144,7 +144,7 @@ class Item {
         code: json["code"],
         category: json["category"],
         priceCategory: json["priceCategory"],
-        buyPrice: json["buyPrice"],
+        buyPrice: json["buyPrice"].toInt(),
         sellPrice: json["sellPrice"],
         currentQty: json["currentQty"],
         reOrderQty: json["reOrderQty"],
