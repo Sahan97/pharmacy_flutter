@@ -107,7 +107,7 @@ class _ChargeFinderState extends State<ChargeFinder> {
           id: Random().nextInt(10000),
           name: item.name,
           priceCategory: '',
-          sellPrice: 0));
+          sellPrice: item.price != null ? item.price.toDouble() : 0));
     } else {
       Messages.simpleMessage(
           head: "Charge already added!",

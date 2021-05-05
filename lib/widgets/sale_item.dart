@@ -22,6 +22,7 @@ class _SaleItemState extends State<SaleItem> {
   var focusNode = new FocusNode();
   var itemPriceFocusNode = new FocusNode();
   final qtyController = TextEditingController();
+  final priceController = TextEditingController();
 
   @override
   void initState() {
@@ -29,8 +30,13 @@ class _SaleItemState extends State<SaleItem> {
       focusNode.requestFocus();
       qtyController.text = '';
     } else {
+      priceController.text = widget.item.sellPrice == null
+          ? '0'
+          : widget.item.sellPrice.toStringAsFixed(0);
+      price = widget.item.sellPrice == null ? 0 : widget.item.sellPrice;
       qtyController.text = '1';
       quantity = 1;
+
       itemPriceFocusNode.requestFocus();
     }
 
@@ -90,7 +96,8 @@ class _SaleItemState extends State<SaleItem> {
           color: Colors.white),
       child: TextFormField(
         focusNode: itemPriceFocusNode,
-        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+        controller: priceController,
+        // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         decoration: InputDecoration(
           border: InputBorder.none,
           focusedBorder: InputBorder.none,
@@ -99,7 +106,7 @@ class _SaleItemState extends State<SaleItem> {
           disabledBorder: InputBorder.none,
         ),
         onChanged: (String value) async {
-          widget.item.sellPrice = double.parse(value);
+          widget.item.sellPrice = value.isEmpty ? 0 : double.parse(value);
           calPrice();
         },
         onFieldSubmitted: (value) {

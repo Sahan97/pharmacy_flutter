@@ -213,7 +213,9 @@ class _FinishOrderState extends State<FinishOrder> {
     });
     var pharmacyItems = [];
     var otherCharges = [];
-    var forPrint = [];
+    var otherChargesPrint = [];
+
+    double drugsCharge = 0;
 
     ScopedModel.of<MainModel>(context).billedItems.forEach((element) {
       if (element.isItem) {
@@ -222,40 +224,62 @@ class _FinishOrderState extends State<FinishOrder> {
           "qty": element.sellQuantity,
           "itemPrice": element.sellPrice,
         });
+        drugsCharge = drugsCharge + (element.sellQuantity * element.sellPrice);
       } else {
         otherCharges.add({
           "name": element.name,
           "qty": element.sellQuantity,
           "itemPrice": element.sellPrice
         });
-      }
 
-      forPrint.add({
-        "name": element.name,
-        "qty": element.sellQuantity,
-        "pricePerItem": element.sellPrice
-      });
+        otherChargesPrint.add({
+          "name": element.name,
+          "qty": element.sellQuantity,
+          "pricePerItem": element.sellPrice
+        });
+      }
     });
-    ApiService.shared.createSaleCall({
-      "customer": name.isEmpty ? 'unknown customer' : name,
-      "pharmacyItems": pharmacyItems,
-      "stationaryItems": [],
-      "otherCharges": otherCharges
-    }).then((value) {
-      setState(() {
-        finishLoading = false;
+
+    saleCall() {
+      ApiService.shared.createSaleCall({
+        "customer": name.isEmpty ? 'unknown customer' : name,
+        "pharmacyItems": pharmacyItems,
+        "stationaryItems": [],
+        "otherCharges": otherCharges
+      }).then((value) {
+        setState(() {
+          finishLoading = false;
+        });
+        if (value.success) {
+          _showPopup(HomePagePopups.NoPopup);
+          ScopedModel.of<MainModel>(context).clearBill();
+
+          ScopedModel.of<MainModel>(context).barCodeFocusNode.requestFocus();
+        } else {
+          Messages.simpleMessage(
+              head: 'Failed!',
+              body:
+                  'There is a probem with the system! Please try again later or contact system admin!');
+        }
       });
-      if (value.success) {
-        _showPopup(HomePagePopups.NoPopup);
-        ScopedModel.of<MainModel>(context).clearBill();
-        ApiService.shared.printBill(value.data['id'], value.data['customer'],
-            forPrint, received.toString());
-        ScopedModel.of<MainModel>(context).barCodeFocusNode.requestFocus();
+    }
+
+    ApiService.shared
+        .printBill(name.isEmpty ? 'unknown customer' : name,
+            drugsCharge.toInt(), otherChargesPrint, received.toString())
+        .then((value) {
+      if (value['success']) {
+        saleCall();
       } else {
-        Messages.simpleMessage(
-            head: 'Failed!',
-            body:
-                'There is a probem with the system! Please try again later or contact system admin!');
+        Messages.confirmMessage(
+            head: "Unable to print receipt!",
+            body: 'Do you want to proceed bill without printed receipt?',
+            onConfirm: () {
+              saleCall();
+            },
+            onCancell: () {
+              _showPopup(HomePagePopups.NoPopup);
+            });
       }
     });
   }

@@ -54,6 +54,29 @@ class _UpdateOtherChargeState extends State<UpdateOtherCharge> {
                               autofocus: true,
                               width: 500,
                             ),
+                            InputField(
+                              initialValue: model
+                                          .otherCharges[
+                                              model.editOtherChargeIndex]
+                                          .price !=
+                                      null
+                                  ? model
+                                      .otherCharges[model.editOtherChargeIndex]
+                                      .price
+                                      .toString()
+                                  : ' ',
+                              icon: Icons.attach_money_outlined,
+                              labelText: 'Price',
+                              onSaved: (String value) {
+                                itemToSend.price =
+                                    value.isEmpty ? null : int.parse(value);
+                              },
+                              onValidate: (String value) {
+                                return null;
+                              },
+                              autofocus: true,
+                              width: 500,
+                            ),
                             SizedBox(
                               height: 100,
                             ),
@@ -98,6 +121,7 @@ class _UpdateOtherChargeState extends State<UpdateOtherCharge> {
     ApiService.shared.updateOtherChargeCall({
       "id": itemToSend.id,
       "name": itemToSend.name,
+      "price": itemToSend.price,
     }).then((value) {
       setState(() {
         _isBusy = false;

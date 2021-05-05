@@ -45,6 +45,21 @@ class _AddOtherChargeState extends State<AddOtherCharge> {
                   autofocus: true,
                   width: 500,
                 ),
+                // SizedBox(
+                //   height: 100,
+                // ),
+                InputField(
+                  icon: Icons.monetization_on_outlined,
+                  labelText: 'Price',
+                  onSaved: (String value) {
+                    newCharge.price = value.isEmpty ? null : int.parse(value);
+                  },
+                  onValidate: (String value) {
+                    return null;
+                  },
+                  autofocus: true,
+                  width: 500,
+                ),
                 SizedBox(
                   height: 100,
                 ),
@@ -83,6 +98,7 @@ class _AddOtherChargeState extends State<AddOtherCharge> {
     });
     ApiService.shared.createOtherCharge({
       "name": newCharge.name,
+      "price": newCharge.price,
     }).then((value) {
       setState(() {
         _isBusy = false;

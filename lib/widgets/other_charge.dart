@@ -4,6 +4,7 @@ import 'package:communication/model/other_charge.dart';
 import 'package:communication/scoped_model/main.dart';
 import 'package:communication/views/manage_other_charges/manage_other_charges.dart';
 import 'package:communication/widgets/Messages.dart';
+import 'package:communication/widgets/item.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -50,8 +51,13 @@ class _OtherChargeViewState extends State<OtherChargeView> {
                         width: 10,
                       ),
                       NameView(name: widget.item.name),
+                      widget.item.price != null
+                          ? PriceView(
+                              price: widget.item.price.toDouble(),
+                              color: Colors.grey)
+                          : Container(),
                       SizedBox(
-                        width: 20,
+                        width: 50,
                       )
                     ],
                   ),
