@@ -26,6 +26,7 @@ class _SaleItemState extends State<SaleItem> {
 
   @override
   void initState() {
+    print(widget.item);
     if (widget.item.isItem) {
       focusNode.requestFocus();
       qtyController.text = '';
@@ -127,7 +128,7 @@ class _SaleItemState extends State<SaleItem> {
     return IconButton(
       padding: EdgeInsets.all(5),
       onPressed: () {
-        ScopedModel.of<MainModel>(context).removeItem(widget.index);
+        ScopedModel.of<MainModel>(context).removeItem(widget.item.id);
         ScopedModel.of<MainModel>(context).barCodeFocusNode.requestFocus();
       },
       icon: Icon(

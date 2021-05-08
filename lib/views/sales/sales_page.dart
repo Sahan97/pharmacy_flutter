@@ -28,6 +28,7 @@ class _SalesPageState extends State<SalesPage> {
 
   @override
   Widget build(BuildContext context) {
+    Messages.setContext(context);
     return RawKeyboardListener(
       autofocus: true,
       focusNode: ScopedModel.of<MainModel>(context).salesFocusNode,
@@ -290,13 +291,14 @@ class _SalesPageState extends State<SalesPage> {
   }
 
   _clearClick() {
-    Messages.confirmMessage(
-        head: 'Are you sure?',
-        body: "This action will clear the current bill.",
-        onConfirm: () {
-          ScopedModel.of<MainModel>(context).clearBill();
-        },
-        onCancell: () {});
+    // Messages.confirmMessage(
+    //     head: 'Are you sure?',
+    //     body: "This action will clear the current bill.",
+    //     onConfirm: () {
+    //       ScopedModel.of<MainModel>(context).clearBill();
+    //     },
+    //     onCancell: () {});
+    ScopedModel.of<MainModel>(context).clearBill();
   }
 
   _closePopup() {

@@ -46,8 +46,10 @@ mixin ItemScopedModel on Model {
     notifyListeners();
   }
 
-  removeItem(int index) {
-    _billedItems.removeAt(index);
+  removeItem(int id) {
+    var t = _billedItems;
+    t.removeWhere((element) => element.id == id);
+    _billedItems = t;
     notifyListeners();
   }
 

@@ -16,7 +16,8 @@ class RequestType {
   static String delete = "DELETE";
 }
 
-String _baseUrl = 'https://pharmacy-manager-backend.herokuapp.com';
+// String _baseUrl = 'https://pharmacy-manager-backend.herokuapp.com';
+String _baseUrl = 'http://localhost:3000';
 String _version = 'v1';
 String get apiUrl => '$_baseUrl/api/$_version';
 String printerServer = 'http://localhost:1234';
