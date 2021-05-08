@@ -26,17 +26,19 @@ class _SaleItemState extends State<SaleItem> {
 
   @override
   void initState() {
-    print(widget.item);
+    print(widget.item.sellQuantity);
     if (widget.item.isItem) {
       focusNode.requestFocus();
-      qtyController.text = '';
+      quantity = widget.item.sellQuantity;
+      qtyController.text = quantity != 0 ? quantity.toStringAsFixed(0) : '';
     } else {
       priceController.text = widget.item.sellPrice == null
           ? '0'
           : widget.item.sellPrice.toStringAsFixed(0);
       price = widget.item.sellPrice == null ? 0 : widget.item.sellPrice;
-      qtyController.text = '1';
-      quantity = 1;
+
+      quantity = widget.item.sellQuantity != 0 ? widget.item.sellQuantity : 1;
+      qtyController.text = quantity.toStringAsFixed(0);
 
       itemPriceFocusNode.requestFocus();
     }
@@ -107,7 +109,9 @@ class _SaleItemState extends State<SaleItem> {
           disabledBorder: InputBorder.none,
         ),
         onChanged: (String value) async {
-          widget.item.sellPrice = value.isEmpty ? 0 : double.parse(value);
+          ScopedModel.of<MainModel>(context).setSellPrice(
+              widget.index, value.isEmpty ? 0 : double.parse(value));
+          // widget.item.sellPrice = value.isEmpty ? 0 : double.parse(value);
           calPrice();
         },
         onFieldSubmitted: (value) {
@@ -161,21 +165,29 @@ class _SaleItemState extends State<SaleItem> {
         onChanged: (String value) async {
           if (value.isEmpty) {
             quantity = 0;
-            widget.item.sellQuantity = 0;
+            ScopedModel.of<MainModel>(context).setQuantity(widget.index, 0);
+            // widget.item.sellQuantity = 0;
           } else {
             if (widget.item.isItem &&
                 widget.item.currentQty < double.parse(value)) {
-              await Messages.simpleMessage(
-                  head: 'Failed!',
-                  body:
-                      'This quantity is not available. Only ${widget.item.currentQty} items are available!');
+              try {
+                await Messages.simpleMessage(
+                    head: 'Failed!',
+                    body:
+                        'This quantity is not available. Only ${widget.item.currentQty} items are available!');
+              } catch (e) {}
 
               qtyController.text = "0";
               quantity = 0;
-              widget.item.sellQuantity = quantity;
+              ScopedModel.of<MainModel>(context)
+                  .setQuantity(widget.index, quantity);
+              // widget.item.sellQuantity = quantity;
             } else {
               quantity = double.parse(value);
-              widget.item.sellQuantity = quantity;
+              print(quantity);
+              ScopedModel.of<MainModel>(context)
+                  .setQuantity(widget.index, quantity);
+              // widget.item.sellQuantity = quantity;
             }
           }
           calPrice();

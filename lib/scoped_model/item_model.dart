@@ -49,8 +49,12 @@ mixin ItemScopedModel on Model {
   removeItem(int id) {
     var t = _billedItems;
     t.removeWhere((element) => element.id == id);
-    _billedItems = t;
+    _billedItems = [];
     notifyListeners();
+    Future.delayed(Duration(milliseconds: 100), () {
+      _billedItems = t;
+      notifyListeners();
+    });
   }
 
   setTotalPrice(double price, int index) {
@@ -60,6 +64,16 @@ mixin ItemScopedModel on Model {
 
   setGetItemsFromBarCode(bool value) {
     getItemsFromBarCode = value;
+    notifyListeners();
+  }
+
+  setQuantity(int index, double qty) {
+    _billedItems[index].sellQuantity = qty;
+    notifyListeners();
+  }
+
+  setSellPrice(int index, double sellPrice) {
+    _billedItems[index].sellPrice = sellPrice;
     notifyListeners();
   }
 }

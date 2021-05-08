@@ -23,7 +23,7 @@ class Item {
   double reOrderQty;
   bool isActive;
   double totalPrice = 0;
-  double sellQuantity = 1;
+  double sellQuantity = 0;
   bool isItem = true;
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
