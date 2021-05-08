@@ -44,65 +44,63 @@ class ApiService {
 
   Future<CommonResponse> _performRequest(String _url, String _type,
       {dynamic body}) async {
-    bool isConnected = await Connectivity().checkConnection();
-    if (isConnected) {
-      return await Dio()
-          .request('$apiUrl$_url',
-              data: body, options: Options(method: _type, headers: _headers))
-          .then((data) {
-        return CommonResponse(data.data);
-      }).catchError((error) {
-        if (error is DioError) {
-          int code = error.response.statusCode;
-          print(code);
-          switch (code) {
-            case 404:
-              Messages.simpleMessage(
-                  head: "Not Found!", body: 'Please try again later');
-              break;
-            case 500:
-              Messages.simpleMessage(
-                  head: "Something went wrong!",
-                  body: 'Please try again later');
-              break;
-            case 400:
-              Messages.simpleMessage(
-                  head: error.response.data['title'],
-                  body: error.response.data['subtitle']);
-              return CommonResponse(error.response.data);
-              break;
-            case 401:
-              Messages.simpleMessage(
-                  head: error.response.data['title'],
-                  body: error.response.data['subtitle']);
-              break;
-            default:
-              Messages.simpleMessage(
-                  head: "Something went wrong!",
-                  body: 'Please try again later');
-          }
-
-          return CommonResponse({
-            'success': false,
-            "data": null,
-            "title": "Something went wrong!",
-            "subtitle": "Please try again later"
-          });
-        } else {
-          Messages.simpleMessage(
-              head: "Something went wrong!", body: 'Please try again later');
-          return CommonResponse({
-            'success': false,
-            "data": null,
-            "title": "Something went wrong!",
-            "subtitle": "Please try again later"
-          });
+    // bool isConnected = await Connectivity().checkConnection();
+    // if (isConnected) {
+    return await Dio()
+        .request('$apiUrl$_url',
+            data: body, options: Options(method: _type, headers: _headers))
+        .then((data) {
+      return CommonResponse(data.data);
+    }).catchError((error) {
+      if (error is DioError) {
+        int code = error.response.statusCode;
+        print(code);
+        switch (code) {
+          case 404:
+            Messages.simpleMessage(
+                head: "Not Found!", body: 'Please try again later');
+            break;
+          case 500:
+            Messages.simpleMessage(
+                head: "Something went wrong!", body: 'Please try again later');
+            break;
+          case 400:
+            Messages.simpleMessage(
+                head: error.response.data['title'],
+                body: error.response.data['subtitle']);
+            return CommonResponse(error.response.data);
+            break;
+          case 401:
+            Messages.simpleMessage(
+                head: error.response.data['title'],
+                body: error.response.data['subtitle']);
+            break;
+          default:
+            Messages.simpleMessage(
+                head: "Something went wrong!", body: 'Please try again later');
         }
-      });
-    } else {
-      Messages.noInternet();
-      throw Exception('No internet');
-    }
+
+        return CommonResponse({
+          'success': false,
+          "data": null,
+          "title": "Something went wrong!",
+          "subtitle": "Please try again later"
+        });
+      } else {
+        Messages.simpleMessage(
+            head: "Something went wrong!", body: 'Please try again later');
+        return CommonResponse({
+          'success': false,
+          "data": null,
+          "title": "Something went wrong!",
+          "subtitle": "Please try again later"
+        });
+      }
+    });
+    // } else {
+    //   Messages.noInternet();
+    //   throw Exception('No internet');
+    // }
   }
 
   Future _printReceipt(String _url, String _type, {dynamic body}) async {
