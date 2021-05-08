@@ -26,7 +26,6 @@ class _SaleItemState extends State<SaleItem> {
 
   @override
   void initState() {
-    print(widget.item.sellQuantity);
     if (widget.item.isItem) {
       focusNode.requestFocus();
       quantity = widget.item.sellQuantity;
@@ -164,7 +163,6 @@ class _SaleItemState extends State<SaleItem> {
           if (value.isEmpty) {
             quantity = 0;
             ScopedModel.of<MainModel>(context).setQuantity(widget.index, 0);
-            // widget.item.sellQuantity = 0;
           } else {
             if (widget.item.isItem &&
                 widget.item.currentQty < double.parse(value)) {
@@ -179,13 +177,10 @@ class _SaleItemState extends State<SaleItem> {
               quantity = 0;
               ScopedModel.of<MainModel>(context)
                   .setQuantity(widget.index, quantity);
-              // widget.item.sellQuantity = quantity;
             } else {
               quantity = double.parse(value);
-              print(quantity);
               ScopedModel.of<MainModel>(context)
                   .setQuantity(widget.index, quantity);
-              // widget.item.sellQuantity = quantity;
             }
           }
           calPrice();
