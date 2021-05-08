@@ -36,10 +36,8 @@ class _SaleItemState extends State<SaleItem> {
           ? '0'
           : widget.item.sellPrice.toStringAsFixed(0);
       price = widget.item.sellPrice == null ? 0 : widget.item.sellPrice;
-
       quantity = widget.item.sellQuantity != 0 ? widget.item.sellQuantity : 1;
       qtyController.text = quantity.toStringAsFixed(0);
-
       itemPriceFocusNode.requestFocus();
     }
 
