@@ -20,6 +20,9 @@ class AdminSaleView extends StatelessWidget {
               padding: EdgeInsets.all(20),
               child: Column(
                 children: [
+                  item.isFreeOfCharge
+                      ? _itemDetail('Type', 'Free Of Charge', color: Colors.red)
+                      : SizedBox(),
                   _itemDetail('Sale Id', item.id),
                   _itemDetail('Date', item.date),
                   _itemDetail('Time', item.time),
@@ -140,7 +143,7 @@ class AdminSaleView extends StatelessWidget {
     );
   }
 
-  Widget _itemDetail(String key, dynamic value) {
+  Widget _itemDetail(String key, dynamic value, {Color color = Colors.black}) {
     return Container(
       width: 450,
       child: Row(
@@ -174,7 +177,8 @@ class AdminSaleView extends StatelessWidget {
           Container(
             child: Text(
               value.toString(),
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 20, fontWeight: FontWeight.bold, color: color),
             ),
           )
         ],

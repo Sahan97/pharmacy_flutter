@@ -9,16 +9,16 @@ Sale saleFromJson(String str) => Sale.fromJson(json.decode(str));
 String saleToJson(Sale data) => json.encode(data.toJson());
 
 class Sale {
-  Sale({
-    this.id,
-    this.customer,
-    this.otherCharges,
-    this.totalPrice,
-    this.createdAt,
-    this.date,
-    this.time,
-    this.pharmacyItems,
-  });
+  Sale(
+      {this.id,
+      this.customer,
+      this.otherCharges,
+      this.totalPrice,
+      this.createdAt,
+      this.date,
+      this.time,
+      this.pharmacyItems,
+      this.isFreeOfCharge});
 
   int id;
   String customer;
@@ -28,6 +28,7 @@ class Sale {
   String date;
   String time;
   List<PharmacyItem> pharmacyItems;
+  bool isFreeOfCharge;
 
   factory Sale.fromJson(Map<String, dynamic> json) => Sale(
         id: json["id"],
@@ -39,7 +40,11 @@ class Sale {
         date: json["date"],
         time: json["time"],
         pharmacyItems: List<PharmacyItem>.from(
-            json["pharmacyItems"].map((x) => PharmacyItem.fromJson(x))),
+          json["pharmacyItems"].map(
+            (x) => PharmacyItem.fromJson(x),
+          ),
+        ),
+        isFreeOfCharge: json["isFreeOfCharge"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -52,6 +57,7 @@ class Sale {
         "time": time,
         "pharmacyItems":
             List<dynamic>.from(pharmacyItems.map((x) => x.toJson())),
+        "isFreeOfCharge": isFreeOfCharge
       };
 }
 

@@ -102,12 +102,14 @@ class _ChargeFinderState extends State<ChargeFinder> {
             .billedItems
             .indexWhere((element) => element.name == item.name) ==
         -1) {
-      ScopedModel.of<MainModel>(context).addToBill(Item(
+      Item it = Item(
           isItem: false,
           id: Random().nextInt(10000),
           name: item.name,
           priceCategory: '',
-          sellPrice: item.price != null ? item.price.toDouble() : 0));
+          sellPrice: item.price != null ? item.price.toDouble() : 0);
+      it.sellQuantity = 1;
+      ScopedModel.of<MainModel>(context).addToBill(it);
     } else {
       Messages.simpleMessage(
           head: "Charge already added!",

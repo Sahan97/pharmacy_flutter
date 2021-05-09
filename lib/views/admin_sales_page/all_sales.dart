@@ -18,6 +18,7 @@ class _AllSalesState extends State<AllSales> {
   List<Sale> sales = [];
   bool _isBusy = false;
   double total = 0;
+  double freeOfCharge = 0;
   double totalCost = 0;
   int saleId;
   final dateController = TextEditingController();
@@ -43,8 +44,13 @@ class _AllSalesState extends State<AllSales> {
         });
         double tot = 0;
         double cost = 0;
+        double foc = 0;
         sales.forEach((element) {
-          tot += element.totalPrice;
+          if (element.isFreeOfCharge) {
+            foc += element.totalPrice;
+          } else {
+            tot += element.totalPrice;
+          }
           element.pharmacyItems.forEach((p) {
             cost += (p.quantity * p.item.buyPrice);
           });
@@ -52,6 +58,7 @@ class _AllSalesState extends State<AllSales> {
         setState(() {
           total = tot;
           totalCost = cost;
+          freeOfCharge = foc;
         });
       }
     });
@@ -157,7 +164,7 @@ class _AllSalesState extends State<AllSales> {
       margin: EdgeInsets.all(0),
       color: Colors.white,
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(2.0),
         child: Column(
           children: [
             Row(
@@ -168,14 +175,41 @@ class _AllSalesState extends State<AllSales> {
                 Text(
                   'Total Sales',
                   style: TextStyle(
-                      fontSize: 30,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: Colors.red),
                 ),
                 Spacer(),
-                price.PriceView(price: total, color: Colors.red),
+                price.PriceView(
+                  price: total,
+                  color: Colors.red,
+                  height: 35,
+                ),
                 SizedBox(
-                  width: 30,
+                  width: 20,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                SizedBox(
+                  width: 20,
+                ),
+                Text(
+                  'Total Free Of Charge',
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.orange),
+                ),
+                Spacer(),
+                price.PriceView(
+                  price: freeOfCharge,
+                  color: Colors.orange,
+                  height: 35,
+                ),
+                SizedBox(
+                  width: 20,
                 ),
               ],
             ),
@@ -187,15 +221,18 @@ class _AllSalesState extends State<AllSales> {
                 Text(
                   'Gross Profit',
                   style: TextStyle(
-                      fontSize: 30,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: Colors.green),
                 ),
                 Spacer(),
                 price.PriceView(
-                    price: (total - totalCost), color: Colors.green),
+                  price: (total - totalCost),
+                  color: Colors.green,
+                  height: 35,
+                ),
                 SizedBox(
-                  width: 30,
+                  width: 20,
                 ),
               ],
             ),

@@ -59,7 +59,12 @@ class _ItemViewState extends State<SaleListItem> {
                     fontSize: 17,
                   ),
                 )),
-            NameView(name: widget.item.customer, al: TextAlign.left),
+            NameView(
+              name: widget.item.customer,
+              al: TextAlign.left,
+              secondText: widget.item.isFreeOfCharge ? ' (Free)' : '',
+              secondTextColor: Colors.red,
+            ),
             PriceView(
                 price: double.parse(widget.item.totalPrice.toString()),
                 color: Colors.green),
@@ -77,11 +82,13 @@ class PriceView extends StatelessWidget {
   final double price;
   final Color color;
   final bool isDiscount;
+  final double height;
   const PriceView(
       {Key key,
       @required this.price,
       @required this.color,
-      this.isDiscount = false})
+      this.isDiscount = false,
+      this.height = 50})
       : super(key: key);
 
   @override
@@ -89,11 +96,11 @@ class PriceView extends StatelessWidget {
     return isDiscount && price == 0
         ? Container(
             width: 90,
-            height: 50,
+            height: height,
           )
         : Container(
             width: 80,
-            height: 50,
+            height: height,
             margin: EdgeInsets.only(right: 10, top: 5, bottom: 5),
             decoration: BoxDecoration(
                 border: Border.all(color: color, width: 3),
@@ -115,22 +122,39 @@ class NameView extends StatelessWidget {
   final double fontSize;
   final Color color;
   final TextAlign al;
+  final String secondText;
+  final Color secondTextColor;
   const NameView(
       {Key key,
       @required this.name,
       this.fontSize = 20,
       this.color = Colors.black,
-      this.al = TextAlign.center})
+      this.al = TextAlign.center,
+      this.secondText = '',
+      this.secondTextColor = Colors.black})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        child: Text(
-          name,
-          style: TextStyle(
-              fontWeight: FontWeight.w600, fontSize: fontSize, color: color),
+        child: Row(
+          children: [
+            Text(
+              name,
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: fontSize,
+                  color: color),
+            ),
+            Text(
+              secondText,
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: fontSize,
+                  color: secondTextColor),
+            ),
+          ],
         ),
       ),
     );

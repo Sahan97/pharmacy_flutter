@@ -22,6 +22,7 @@ class _FinishOrderState extends State<FinishOrder> {
   int received = 0;
   String name = '';
   bool finishLoading = false;
+  bool isFreeOfCharge = false;
 
   @override
   void initState() {
@@ -46,13 +47,22 @@ class _FinishOrderState extends State<FinishOrder> {
                     text: 'Total Price',
                     price: finalPrice,
                     color: Colors.green),
-                _receivedPrice(),
+                isFreeOfCharge
+                    ? Container(
+                        width: 10,
+                        height: 50,
+                      )
+                    : _receivedPrice(),
                 _priceItem(
                     text: 'Balance',
-                    price: received - finalPrice,
+                    price: isFreeOfCharge ? 0 : received - finalPrice,
                     color: (received - finalPrice) < 0
                         ? Colors.red
                         : Colors.orange),
+                SizedBox(
+                  height: 40,
+                ),
+                _freeOfCharge(),
                 ButtonBar(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -105,6 +115,36 @@ class _FinishOrderState extends State<FinishOrder> {
                   fontSize: 25, color: color, fontWeight: FontWeight.bold),
             ),
           )
+        ],
+      ),
+    );
+  }
+
+  Widget _freeOfCharge() {
+    return Container(
+      width: 500,
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              child: Text(
+                "Free Of Charge",
+                style: TextStyle(
+                    fontSize: 25,
+                    color: Colors.orange,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+          Container(
+              child: Switch(
+            value: isFreeOfCharge,
+            onChanged: (value) {
+              setState(() {
+                isFreeOfCharge = value;
+              });
+            },
+          ))
         ],
       ),
     );
@@ -202,7 +242,7 @@ class _FinishOrderState extends State<FinishOrder> {
   }
 
   _finishOrder() {
-    if (received < finalPrice) {
+    if (!isFreeOfCharge && received < finalPrice) {
       Messages.simpleMessage(
           head: 'Failed!',
           body: 'Received price from customer is less than the total price!');
@@ -245,7 +285,8 @@ class _FinishOrderState extends State<FinishOrder> {
         "customer": name.isEmpty ? 'unknown customer' : name,
         "pharmacyItems": pharmacyItems,
         "stationaryItems": [],
-        "otherCharges": otherCharges
+        "otherCharges": otherCharges,
+        "isFreeOfCharge": isFreeOfCharge
       }).then((value) {
         setState(() {
           finishLoading = false;
@@ -265,8 +306,12 @@ class _FinishOrderState extends State<FinishOrder> {
     }
 
     ApiService.shared
-        .printBill(name.isEmpty ? 'unknown customer' : name,
-            drugsCharge.toInt(), otherChargesPrint, received.toString())
+        .printBill(
+            name.isEmpty ? 'unknown customer' : name,
+            drugsCharge.toInt(),
+            otherChargesPrint,
+            received.toString(),
+            isFreeOfCharge)
         .then((value) {
       if (value['success']) {
         saleCall();
