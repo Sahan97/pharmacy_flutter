@@ -302,7 +302,8 @@ class _FinishOrderState extends State<FinishOrder> {
             ScopedModel.of<MainModel>(context).clearBill();
             ScopedModel.of<MainModel>(context).barCodeFocusNode.requestFocus();
           } else {
-            ApiService.shared.createMissedSaleCall(sales).then((value) {
+            ApiService.shared
+                .createMissedSaleCall({"sales": sales}).then((value) {
               if (value.success) {
                 prefs.setString('sales', jsonEncode([]));
                 _showPopup(HomePagePopups.NoPopup);
