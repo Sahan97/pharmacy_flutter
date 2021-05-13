@@ -24,26 +24,25 @@ class _ItemFinderState extends State<ItemFinder> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   void initState() {
-    ScopedModel.of<MainModel>(context).getItemsFromBarCode
-        ? _getItemsFromBarCode()
-        : _loadAllItems();
+    _loadAllItems(false);
     super.initState();
   }
 
-  _loadAllItems() async {
+  _loadAllItems(bool shouldLoad) async {
     setState(() {
       filteredItems = null;
     });
-    List<Item> items = await ApiService.shared.getActiveItemsCall();
+    List<Item> items = shouldLoad
+        ? await ApiService.shared.getActiveItemsCall()
+        : ScopedModel.of<MainModel>(context).items.length == 0
+            ? await ApiService.shared.getActiveItemsCall()
+            : ScopedModel.of<MainModel>(context).items;
+
     if (this.mounted) {
       ScopedModel.of<MainModel>(context).setItems(items);
       filteredItems = ScopedModel.of<MainModel>(context).items;
       ScopedModel.of<MainModel>(context).focusItemFinder();
     }
-  }
-
-  _getItemsFromBarCode() {
-    filteredItems = ScopedModel.of<MainModel>(context).items;
   }
 
   @override
@@ -196,7 +195,7 @@ class _ItemFinderState extends State<ItemFinder> {
               ),
               onPressed: () {
                 _formKey.currentState.reset();
-                _loadAllItems();
+                _loadAllItems(true);
               },
               child: Text(
                 'Reload',

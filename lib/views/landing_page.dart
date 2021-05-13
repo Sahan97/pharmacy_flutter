@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:animated_widgets/animated_widgets.dart';
 import 'package:animated_widgets/widgets/opacity_animated.dart';
 import 'package:communication/helpers/api_service.dart';

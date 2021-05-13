@@ -289,6 +289,13 @@ class ApiService {
     return response;
   }
 
+  Future<CommonResponse> createMissedSaleCall(dynamic data) async {
+    CommonResponse response = await _performRequest(
+        '/lg/sale/bulkCreate', RequestType.post,
+        body: data);
+    return response;
+  }
+
   Future<CommonResponse> getItemByBarcodeCall(String barcode) async {
     CommonResponse response = await _performRequest(
         '/lg/item/barcode', RequestType.get,

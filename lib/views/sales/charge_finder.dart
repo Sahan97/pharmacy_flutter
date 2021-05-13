@@ -25,15 +25,19 @@ class _ChargeFinderState extends State<ChargeFinder> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   void initState() {
-    _loadAllItems();
+    _loadAllItems(false);
     super.initState();
   }
 
-  _loadAllItems() async {
+  _loadAllItems(bool shouldLoad) async {
     setState(() {
       filteredItems = null;
     });
-    List<OtherCharge> items = await ApiService.shared.getOtherCharges();
+    List<OtherCharge> items = shouldLoad
+        ? await ApiService.shared.getOtherCharges()
+        : ScopedModel.of<MainModel>(context).otherCharges.length == 0
+            ? await ApiService.shared.getOtherCharges()
+            : ScopedModel.of<MainModel>(context).otherCharges;
     if (this.mounted) {
       ScopedModel.of<MainModel>(context).setOtherCharges(items);
       filteredItems = ScopedModel.of<MainModel>(context).otherCharges;
@@ -199,7 +203,7 @@ class _ChargeFinderState extends State<ChargeFinder> {
               ),
               onPressed: () {
                 _formKey.currentState.reset();
-                _loadAllItems();
+                _loadAllItems(true);
               },
               child: Text(
                 'Reload',

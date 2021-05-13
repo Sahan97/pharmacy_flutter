@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:communication/helpers/api_service.dart';
 import 'package:communication/scoped_model/main.dart';
 import 'package:communication/views/home_page/home_page.dart';
 import 'package:communication/widgets/Messages.dart';
 import 'package:communication/widgets/blackout.dart';
 import 'package:communication/widgets/loading_btn.dart';
+import 'package:cross_local_storage/cross_local_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -287,20 +290,45 @@ class _FinishOrderState extends State<FinishOrder> {
         "stationaryItems": [],
         "otherCharges": otherCharges,
         "isFreeOfCharge": isFreeOfCharge
-      }).then((value) {
+      }).then((value) async {
         setState(() {
           finishLoading = false;
         });
         if (value.success) {
-          _showPopup(HomePagePopups.NoPopup);
-          ScopedModel.of<MainModel>(context).clearBill();
-
-          ScopedModel.of<MainModel>(context).barCodeFocusNode.requestFocus();
+          LocalStorageInterface prefs = await LocalStorage.getInstance();
+          List<dynamic> sales = jsonDecode(prefs.getString('sales') ?? "[]");
+          if (sales.length == 0) {
+            _showPopup(HomePagePopups.NoPopup);
+            ScopedModel.of<MainModel>(context).clearBill();
+            ScopedModel.of<MainModel>(context).barCodeFocusNode.requestFocus();
+          } else {
+            ApiService.shared.createMissedSaleCall(sales).then((value) {
+              if (value.success) {
+                prefs.setString('sales', jsonEncode([]));
+                _showPopup(HomePagePopups.NoPopup);
+                ScopedModel.of<MainModel>(context).clearBill();
+                ScopedModel.of<MainModel>(context)
+                    .barCodeFocusNode
+                    .requestFocus();
+              }
+            });
+          }
         } else {
-          Messages.simpleMessage(
-              head: 'Failed!',
-              body:
-                  'There is a probem with the system! Please try again later or contact system admin!');
+          LocalStorageInterface prefs = await LocalStorage.getInstance();
+          List<dynamic> sales = jsonDecode(prefs.getString('sales') ?? "[]");
+          sales.add({
+            "customer": name.isEmpty ? 'unknown customer' : name,
+            "pharmacyItems": pharmacyItems,
+            "stationaryItems": [],
+            "otherCharges": otherCharges,
+            "isFreeOfCharge": isFreeOfCharge
+          });
+          prefs.setString('sales', jsonEncode(sales));
+
+          // Messages.simpleMessage(
+          //     head: 'Failed!',
+          //     body:
+          //         'There is a probem with the system! Please try again later or contact system admin!');
         }
       });
     }

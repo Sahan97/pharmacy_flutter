@@ -19,6 +19,7 @@ dependencies:
   process_run: ^0.10.12+3
   filepicker_windows: ^2.0.0
   flutter_simple_calculator: ^1.0.4
+  cross_local_storage: ^1.1.0
 
 dev_dependencies:
   flutter_test:
