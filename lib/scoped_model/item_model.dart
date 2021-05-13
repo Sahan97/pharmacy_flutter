@@ -29,6 +29,16 @@ mixin ItemScopedModel on Model {
     notifyListeners();
   }
 
+  reduceFromItems(List<Item> itemsToReduce) {
+    itemsToReduce.forEach((reduce) {
+      int index = items.indexWhere((it) => it.id == reduce.id);
+      if (index >= 0) {
+        items[index].currentQty -= reduce.sellQuantity;
+      }
+    });
+    notifyListeners();
+  }
+
   setOtherCharges(List<OtherCharge> it) {
     otherCharges = it;
     notifyListeners();

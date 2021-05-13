@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:communication/helpers/api_service.dart';
+import 'package:communication/model/item.dart';
 import 'package:communication/scoped_model/main.dart';
 import 'package:communication/views/home_page/home_page.dart';
 import 'package:communication/widgets/Messages.dart';
@@ -294,6 +295,15 @@ class _FinishOrderState extends State<FinishOrder> {
         setState(() {
           finishLoading = false;
         });
+
+        ScopedModel.of<MainModel>(context).billedItems.forEach((element) {
+          List<Item> items = [];
+          if (element.isItem) {
+            items.add(element);
+          }
+          ScopedModel.of<MainModel>(context).reduceFromItems(items);
+        });
+
         if (value.success) {
           LocalStorageInterface prefs = await LocalStorage.getInstance();
           List<dynamic> sales = jsonDecode(prefs.getString('sales') ?? "[]");
