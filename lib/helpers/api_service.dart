@@ -295,8 +295,9 @@ class ApiService {
   }
 
   Future<CommonResponse> createSaleCall(dynamic data) async {
-    CommonResponse response =
-        await _performRequest('/lg/sale/create', RequestType.post, body: data);
+    CommonResponse response = await _performRequest(
+        '/lg/sale/create', RequestType.post,
+        body: data, blockMessages: true);
     return response;
   }
 
