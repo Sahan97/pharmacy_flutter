@@ -109,10 +109,12 @@ class _ReOrderListState extends State<ReOrderList> {
       _isBusy = true;
     });
     ApiService.shared.getReOrderListCall().then((value) {
-      setState(() {
-        _isBusy = false;
-        allItems = value;
-      });
+      if (this.mounted) {
+        setState(() {
+          _isBusy = false;
+          allItems = value;
+        });
+      }
     });
   }
 }

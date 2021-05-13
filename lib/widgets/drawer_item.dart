@@ -18,7 +18,7 @@ class DrawerItem extends StatelessWidget {
       child: ListTile(
         onTap: () {
           if (onPressed == null) {
-            Navigator.pop(context);
+            // Navigator.pop(context);
             if (route != null) {
               Navigator.pushNamed(context, route);
             }

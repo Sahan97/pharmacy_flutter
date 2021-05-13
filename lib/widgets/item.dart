@@ -126,42 +126,25 @@ class _ItemViewState extends State<ItemView> {
             },
             padding: EdgeInsets.all(0),
           ),
-          Tooltip(
+          SidePanelButton(
             message: 'Re-Fill',
-            child: FloatingActionButton(
-              key: Key('refill btn'),
-              onPressed: _onReFill,
-              child: Icon(
-                Icons.settings_backup_restore,
-                color: Colors.blue,
-              ),
-              backgroundColor: Colors.white,
-            ),
+            icon: Icons.settings_backup_restore,
+            iconColor: Colors.blue,
+            onPressed: _onReFill,
           ),
-          Tooltip(
+          SidePanelButton(
             message: 'Edit',
-            child: FloatingActionButton(
-              key: Key('edit btn'),
-              onPressed: _onEdit,
-              child: Icon(
-                Icons.edit,
-                color: Colors.green,
-              ),
-              backgroundColor: Colors.white,
-            ),
+            icon: Icons.edit,
+            iconColor: Colors.green,
+            onPressed: _onEdit,
           ),
-          Tooltip(
+          SidePanelButton(
             message: !widget.item.isActive ? 'Activate' : 'Deactivate',
-            child: FloatingActionButton(
-              key: Key('delete btn'),
-              onPressed: _onDelete,
-              child: Icon(
+            icon:
                 !widget.item.isActive ? Icons.restore_from_trash : Icons.delete,
-                color: !widget.item.isActive ? Colors.green : Colors.red,
-              ),
-              backgroundColor: Colors.white,
-            ),
-          )
+            iconColor: !widget.item.isActive ? Colors.green : Colors.red,
+            onPressed: _onDelete,
+          ),
         ],
       ),
     );
@@ -205,6 +188,38 @@ class _ItemViewState extends State<ItemView> {
     ScopedModel.of<MainModel>(context).setEditItem(widget.index);
     ScopedModel.of<MainModel>(context)
         .setManageItemPopup(ManageItemPopup.ReFillItem);
+  }
+}
+
+class SidePanelButton extends StatelessWidget {
+  final String message;
+  final Function onPressed;
+  final IconData icon;
+  final Color iconColor;
+  SidePanelButton(
+      {@required this.message,
+      @required this.onPressed,
+      @required this.icon,
+      @required this.iconColor});
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: message,
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100),
+          color: Colors.white,
+        ),
+        child: IconButton(
+          onPressed: onPressed,
+          icon: Icon(
+            icon,
+            color: iconColor,
+          ),
+        ),
+      ),
+    );
   }
 }
 

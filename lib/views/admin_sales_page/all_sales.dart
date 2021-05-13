@@ -35,31 +35,33 @@ class _AllSalesState extends State<AllSales> {
       total = 0;
     });
     ApiService.shared.getSales(date, saleId).then((value) {
-      setState(() {
-        _isBusy = false;
-      });
-      if (value.success) {
+      if (this.mounted) {
         setState(() {
-          sales = List<Sale>.from(value.data.map((x) => Sale.fromJson(x)));
+          _isBusy = false;
         });
-        double tot = 0;
-        double cost = 0;
-        double foc = 0;
-        sales.forEach((element) {
-          if (element.isFreeOfCharge) {
-            foc += element.totalPrice;
-          } else {
-            tot += element.totalPrice;
-          }
-          element.pharmacyItems.forEach((p) {
-            cost += (p.quantity * p.item.buyPrice);
+        if (value.success) {
+          setState(() {
+            sales = List<Sale>.from(value.data.map((x) => Sale.fromJson(x)));
           });
-        });
-        setState(() {
-          total = tot;
-          totalCost = cost;
-          freeOfCharge = foc;
-        });
+          double tot = 0;
+          double cost = 0;
+          double foc = 0;
+          sales.forEach((element) {
+            if (element.isFreeOfCharge) {
+              foc += element.totalPrice;
+            } else {
+              tot += element.totalPrice;
+            }
+            element.pharmacyItems.forEach((p) {
+              cost += (p.quantity * p.item.buyPrice);
+            });
+          });
+          setState(() {
+            total = tot;
+            totalCost = cost;
+            freeOfCharge = foc;
+          });
+        }
       }
     });
   }

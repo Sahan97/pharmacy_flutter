@@ -34,9 +34,11 @@ class _ChargeFinderState extends State<ChargeFinder> {
       filteredItems = null;
     });
     List<OtherCharge> items = await ApiService.shared.getOtherCharges();
-    ScopedModel.of<MainModel>(context).setOtherCharges(items);
-    filteredItems = ScopedModel.of<MainModel>(context).otherCharges;
-    ScopedModel.of<MainModel>(context).focusItemFinder();
+    if (this.mounted) {
+      ScopedModel.of<MainModel>(context).setOtherCharges(items);
+      filteredItems = ScopedModel.of<MainModel>(context).otherCharges;
+      ScopedModel.of<MainModel>(context).focusItemFinder();
+    }
   }
 
   @override

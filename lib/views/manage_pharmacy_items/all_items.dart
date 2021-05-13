@@ -189,11 +189,13 @@ class _AllItemsState extends State<AllItems> {
       _isBusy = true;
     });
     ApiService.shared.getItemsCall().then((value) {
-      setState(() {
-        _isBusy = false;
-        allItems = value;
-        ScopedModel.of<MainModel>(context).setItems(value);
-      });
+      if (this.mounted) {
+        setState(() {
+          _isBusy = false;
+          allItems = value;
+          ScopedModel.of<MainModel>(context).setItems(value);
+        });
+      }
     });
   }
 }

@@ -138,12 +138,13 @@ class _LoginState extends State<Login> {
         isBusy = false;
       });
       if (!value.success) {
-        Messages.simpleMessage(
-            head: value.title,
-            body: value.subtitle,
-            onPress: () {
-              Navigator.pushReplacementNamed(context, '/landing');
-            });
+        // Messages.simpleMessage(
+        //     head: value.title,
+        //     body: value.subtitle,
+        //     onPress: () {
+        //       Navigator.pushReplacementNamed(context, '/landing');
+        //     });
+        // Navigator.pushReplacementNamed(context, '/landing');
       } else {
         User currentUser = User.fromJson(value.data['user']);
         ScopedModel.of<MainModel>(context).login(currentUser);

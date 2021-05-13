@@ -48,12 +48,14 @@ class _AllUsersState extends State<AllUsers> {
       _isBusy = true;
     });
     ApiService.shared.getAllUsersCall().then((value) {
-      setState(() {
-        _isBusy = false;
-      });
-      setState(() {
-        allUsers = value;
-      });
+      if (this.mounted) {
+        setState(() {
+          _isBusy = false;
+        });
+        setState(() {
+          allUsers = value;
+        });
+      }
     });
   }
 

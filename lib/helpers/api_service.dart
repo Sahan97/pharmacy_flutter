@@ -16,8 +16,8 @@ class RequestType {
   static String delete = "DELETE";
 }
 
-// String _baseUrl = 'https://pharmacy-manager-backend.herokuapp.com';
-String _baseUrl = 'http://localhost:3000';
+String _baseUrl = 'https://pharmacy-manager-backend.herokuapp.com';
+String _localBaseUrl = 'http://localhost:3000';
 String _version = 'v1';
 String get apiUrl => '$_baseUrl/api/$_version';
 String printerServer = 'http://localhost:1234';
@@ -53,7 +53,7 @@ class ApiService {
       return CommonResponse(data.data);
     }).catchError((error) {
       if (error is DioError) {
-        int code = error.response.statusCode;
+        int code = error.response != null ? error.response.statusCode : 500;
         print(code);
         switch (code) {
           case 404:
@@ -144,7 +144,9 @@ class ApiService {
   Future<List<User>> getAllUsersCall() async {
     CommonResponse response =
         await _performRequest('/lg/user/all', RequestType.get);
-    return List<User>.from(response.data.map((x) => User.fromJson(x)));
+    return response.success
+        ? List<User>.from(response.data.map((x) => User.fromJson(x)))
+        : [];
   }
 
   Future<CommonResponse> updateRoleCall(data) async {
@@ -194,21 +196,25 @@ class ApiService {
   Future<List<Item>> getItemsCall() async {
     CommonResponse response =
         await _performRequest('/lg/item/getAll', RequestType.get);
-    return List<Item>.from(
-      response.data.map(
-        (item) => Item.fromJson(item),
-      ),
-    );
+    return response.success
+        ? List<Item>.from(
+            response.data.map(
+              (item) => Item.fromJson(item),
+            ),
+          )
+        : [];
   }
 
   Future<List<Item>> getReOrderListCall() async {
     CommonResponse response =
         await _performRequest('/lg/item/get_re_order_list', RequestType.get);
-    return List<Item>.from(
-      response.data.map(
-        (item) => Item.fromJson(item),
-      ),
-    );
+    return response.success
+        ? List<Item>.from(
+            response.data.map(
+              (item) => Item.fromJson(item),
+            ),
+          )
+        : [];
   }
 
   Future<CommonResponse> createOtherCharge(dynamic data) async {
@@ -228,11 +234,13 @@ class ApiService {
   Future<List<OtherCharge>> getOtherCharges() async {
     CommonResponse response =
         await _performRequest('/lg/other_charge/get', RequestType.get);
-    return List<OtherCharge>.from(
-      response.data.map(
-        (item) => OtherCharge.fromJson(item),
-      ),
-    );
+    return response.success
+        ? List<OtherCharge>.from(
+            response.data.map(
+              (item) => OtherCharge.fromJson(item),
+            ),
+          )
+        : [];
   }
 
   Future<CommonResponse> deleteOtherCharge(int id) async {
@@ -247,11 +255,13 @@ class ApiService {
   Future<List<Item>> getActiveItemsCall() async {
     CommonResponse response =
         await _performRequest('/lg/item/all_active', RequestType.get);
-    return List<Item>.from(
-      response.data.map(
-        (item) => Item.fromJson(item),
-      ),
-    );
+    return response.success
+        ? List<Item>.from(
+            response.data.map(
+              (item) => Item.fromJson(item),
+            ),
+          )
+        : [];
   }
 
   Future itemActiveInactive(int id, bool isActive) async {

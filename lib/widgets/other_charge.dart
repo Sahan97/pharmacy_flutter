@@ -115,24 +115,16 @@ class _OtherChargeViewState extends State<OtherChargeView> {
             },
             padding: EdgeInsets.all(0),
           ),
-          FloatingActionButton(
-            key: Key('edit btn'),
-            onPressed: _onEdit,
-            child: Icon(
-              Icons.edit,
-              color: Colors.green,
-            ),
-            backgroundColor: Colors.white,
-          ),
-          FloatingActionButton(
-            key: Key('delete btn'),
-            onPressed: _onDelete,
-            child: Icon(
-              Icons.delete,
-              color: Colors.red,
-            ),
-            backgroundColor: Colors.white,
-          )
+          SidePanelButton(
+              message: "Edit",
+              onPressed: _onEdit,
+              icon: Icons.edit,
+              iconColor: Colors.green),
+          SidePanelButton(
+              message: "Delete",
+              onPressed: _onDelete,
+              icon: Icons.delete,
+              iconColor: Colors.red),
         ],
       ),
     );

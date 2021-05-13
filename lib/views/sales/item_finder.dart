@@ -35,9 +35,11 @@ class _ItemFinderState extends State<ItemFinder> {
       filteredItems = null;
     });
     List<Item> items = await ApiService.shared.getActiveItemsCall();
-    ScopedModel.of<MainModel>(context).setItems(items);
-    filteredItems = ScopedModel.of<MainModel>(context).items;
-    ScopedModel.of<MainModel>(context).focusItemFinder();
+    if (this.mounted) {
+      ScopedModel.of<MainModel>(context).setItems(items);
+      filteredItems = ScopedModel.of<MainModel>(context).items;
+      ScopedModel.of<MainModel>(context).focusItemFinder();
+    }
   }
 
   _getItemsFromBarCode() {

@@ -79,11 +79,13 @@ class _AllOtherChargesState extends State<AllOtherCharges> {
       _isBusy = true;
     });
     ApiService.shared.getOtherCharges().then((value) {
-      setState(() {
-        _isBusy = false;
-        allCharges = value;
-        ScopedModel.of<MainModel>(context).setOtherCharges(value);
-      });
+      if (this.mounted) {
+        setState(() {
+          _isBusy = false;
+          allCharges = value;
+          ScopedModel.of<MainModel>(context).setOtherCharges(value);
+        });
+      }
     });
   }
 }
