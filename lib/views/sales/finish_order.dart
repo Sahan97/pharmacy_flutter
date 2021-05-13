@@ -311,6 +311,12 @@ class _FinishOrderState extends State<FinishOrder> {
                 ScopedModel.of<MainModel>(context)
                     .barCodeFocusNode
                     .requestFocus();
+              } else {
+                _showPopup(HomePagePopups.NoPopup);
+                ScopedModel.of<MainModel>(context).clearBill();
+                ScopedModel.of<MainModel>(context)
+                    .barCodeFocusNode
+                    .requestFocus();
               }
             });
           }
