@@ -325,7 +325,9 @@ class _FinishOrderState extends State<FinishOrder> {
             "isFreeOfCharge": isFreeOfCharge
           });
           prefs.setString('sales', jsonEncode(sales));
-
+          _showPopup(HomePagePopups.NoPopup);
+          ScopedModel.of<MainModel>(context).clearBill();
+          ScopedModel.of<MainModel>(context).barCodeFocusNode.requestFocus();
           // Messages.simpleMessage(
           //     head: 'Failed!',
           //     body:

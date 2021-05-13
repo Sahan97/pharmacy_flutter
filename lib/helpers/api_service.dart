@@ -43,7 +43,7 @@ class ApiService {
   }
 
   Future<CommonResponse> _performRequest(String _url, String _type,
-      {dynamic body}) async {
+      {dynamic body, bool blockMessages = false}) async {
     // bool isConnected = await Connectivity().checkConnection();
     // if (isConnected) {
     return await Dio()
@@ -52,49 +52,60 @@ class ApiService {
         .then((data) {
       return CommonResponse(data.data);
     }).catchError((error) {
-      if (error is DioError) {
-        int code = error.response != null ? error.response.statusCode : 500;
-        print(code);
-        switch (code) {
-          case 404:
-            Messages.simpleMessage(
-                head: "Not Found!", body: 'Please try again later');
-            break;
-          case 500:
-            Messages.simpleMessage(
-                head: "Something went wrong!", body: 'Please try again later');
-            break;
-          case 400:
-            Messages.simpleMessage(
-                head: error.response.data['title'],
-                body: error.response.data['subtitle']);
-            return CommonResponse(error.response.data);
-            break;
-          case 401:
-            Messages.simpleMessage(
-                head: error.response.data['title'],
-                body: error.response.data['subtitle']);
-            break;
-          default:
-            Messages.simpleMessage(
-                head: "Something went wrong!", body: 'Please try again later');
-        }
-
+      if (blockMessages) {
         return CommonResponse({
           'success': false,
           "data": null,
-          "title": "Something went wrong!",
-          "subtitle": "Please try again later"
+          "title": "Unable to write server!",
+          "subtitle": "Unable to write server"
         });
       } else {
-        Messages.simpleMessage(
-            head: "Something went wrong!", body: 'Please try again later');
-        return CommonResponse({
-          'success': false,
-          "data": null,
-          "title": "Something went wrong!",
-          "subtitle": "Please try again later"
-        });
+        if (error is DioError) {
+          int code = error.response != null ? error.response.statusCode : 500;
+          print(code);
+          switch (code) {
+            case 404:
+              Messages.simpleMessage(
+                  head: "Not Found!", body: 'Please try again later');
+              break;
+            case 500:
+              Messages.simpleMessage(
+                  head: "Something went wrong!",
+                  body: 'Please try again later');
+              break;
+            case 400:
+              Messages.simpleMessage(
+                  head: error.response.data['title'],
+                  body: error.response.data['subtitle']);
+              return CommonResponse(error.response.data);
+              break;
+            case 401:
+              Messages.simpleMessage(
+                  head: error.response.data['title'],
+                  body: error.response.data['subtitle']);
+              break;
+            default:
+              Messages.simpleMessage(
+                  head: "Something went wrong!",
+                  body: 'Please try again later');
+          }
+
+          return CommonResponse({
+            'success': false,
+            "data": null,
+            "title": "Something went wrong!",
+            "subtitle": "Please try again later"
+          });
+        } else {
+          Messages.simpleMessage(
+              head: "Something went wrong!", body: 'Please try again later');
+          return CommonResponse({
+            'success': false,
+            "data": null,
+            "title": "Something went wrong!",
+            "subtitle": "Please try again later"
+          });
+        }
       }
     });
     // } else {
